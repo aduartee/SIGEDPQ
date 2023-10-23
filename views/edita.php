@@ -5,7 +5,9 @@ require_once "../models/Contact.php";
 require_once "../models/ContactService.php";
 
 print_r($_GET);
-$contact = Contact::getById($conn, $_GET['id']);
+$contact = new Contact();
+$id_item = $_GET['id'];
+$contact->getById($conn, $id_item);
 ?>
 
 <body>
