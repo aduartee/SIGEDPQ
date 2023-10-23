@@ -61,24 +61,25 @@ class Contact
 
     public static function getById($conn, $id)
     {
+        try {
+            $query = "SELECT * FROM estoque_laboratorio WHERE id = :id";
+            $prepare = $conn->prepare($query);
+            $prepare->bindParam(':id', $id, PDO::PARAM_INT);
+            $prepare->execute();
+            $row = $prepare->fetch(PDO::FETCH_ASSOC);
 
-        $query = "SELECT * FROM estoque_laboratorio WHERE id = :id";
-        $prepare = $conn->prepare($query);
-        $prepare->bindParam(':id', $id, PDO::PARAM_INT);
-        $prepare->execute();
-        $row = $prepare->fetch(PDO::FETCH_ASSOC);
-
-        if ($row) {
-            $contact = new Contact();
-            $contact->id = $row['id'];
-            $contact->name = $row['nome'];
-            $contact->laboratory = $row['laboratorio'];
-            $contact->date = $row['data'];
-            $contact->quantity = $row['quantidade'];
-            $contact->reagent = $row['reagente'];
-
-            return $contact;
+            if ($row) {
+                $contact = new Contact();
+                $contact->setName($row['nome']);
+                $contact->setLaboratory($row['laboratorio']);
+                $contact->setDate($row['data']);
+                $contact->setQuantity($row['quantidade']);
+                $contact->setReagent($row['reagente']);
+                return $contact;
+            }
+        } catch (PDOException $e) {
+            echo 'Erro na query' . $e->getMessage();
+            return null;
         }
-        return null;
     }
 }

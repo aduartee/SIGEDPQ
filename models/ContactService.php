@@ -13,7 +13,7 @@ class ContactService
         $contacts = [];
         $query = $this->conn->query("SELECT * FROM estoque_laboratorio");
 
-        while($row = $query->fetch_assoc()){
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $contact = new Contact();
             $contact->id = $row["id"];
             $contact->name = $row["nome"];

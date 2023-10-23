@@ -39,7 +39,9 @@ label {
 }
 
 input[type="text"],
-input[type="email"] {
+input[type="email"],
+input[type="date"],
+input[type="number"] {
     width: 100%;
     padding: 12px;
     font-size: 16px;

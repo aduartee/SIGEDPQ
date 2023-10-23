@@ -1,15 +1,8 @@
 <?php
-	// Parametros para fazer a conexão com o banco
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "sistema_liberato";
-
-	// Parte responsavel pela conexão com o banco de dados
-	$conn = new mysqli($servername, $username, $password, $dbname);
-
-	// Joga uma mensagem de erro caso a conexão não de certo
-	if ($conn->connect_error) {
-	    die("Erro na conexão: " . $conn->connect_error);
-	}
-?>
+$username = "root";
+$password = "";
+try {
+	$conn = new PDO('mysql:host=localhost;dbname=sistema_liberato', $username, $password);
+} catch (PDOException $e) {
+	echo "Erro na conexão" . $e->getMessage();
+}

@@ -4,6 +4,17 @@ function validaEdicao(){
     let telefone = document.getElementById("telefone").value;
     let esporte_preferido = document.getElementById("esporte_preferido").value;
     let cor_preferida = document.querySelectorAll('input[name="cor_preferida[]"]:checked');
+    let quantity = document.getElementById("quantity");
+
+    quantity.addEventListener("input", function(){
+        let value = parseFloat(quantity.value);
+    
+        if(isNaN(value)){
+            quantity.value = 0;
+        } else if(value < -1) {
+            quantity.value = -1;
+        }
+    });
 
     if(nome.length == '' || email.length == ''|| telefone.length == '' || esporte_preferido == '' || cor_preferida == ''){
         alert('Não é possivel deixar os campos em branco')
