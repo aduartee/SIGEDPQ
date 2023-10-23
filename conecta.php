@@ -3,7 +3,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "crud_arthur";
+	$dbname = "sistema_liberato";
 
 	// Parte responsavel pela conexão com o banco de dados
 	$conn = new mysqli($servername, $username, $password, $dbname);

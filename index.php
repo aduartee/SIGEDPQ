@@ -1,53 +1,82 @@
+<?php
+require_once "models/Contact.php";
+require_once "models/ContactService.php";
+require_once "conecta.php";
+$contactService = new ContactService($conn);
+
+$contacts = $contactService->getAllContacts();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="css/index.css"> 
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<link rel="shortcut icon" href="imagens/favicon_crud.png" type="image/x-icon" />
-    <title>Crud Arthur</title>
+	<!-- JQUERY -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- BOOTSTRAP -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script src="js/removeItem.js"></script>
+	<title>SIGEDPQ</title>
 </head>
+
 <body>
-	<h1>Tabela de registros</h1>
-	<!-- linka para a pagina onde ocorre se insere os dados -->
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					...
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
+					<button type="button" class="btn btn-primary" id="remove">Remover</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<h2>SISTEMA INFORMATIZADO PARA GESTÃO DE ESTOQUE E DESCARTE DE PRODUTOS QUÍMICOS</h2>
 	<a href="adiciona.php">Insira os dados</a>
 	<br><br>
 	<table>
 		<thead>
 			<tr>
 				<th>Nome</th>
-				<th>Email</th>
-				<th>Telefone</th>
-				<th>Esporte Preferido</th>
-				<th>Cor Preferida</th>
+				<th>Laboratório</th>
+				<th>Data</th>
+				<th>Quantidade</th>
+				<th>Reagente</th>
 				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php
-				//Aqui está sendo chamado o arquivo de conexão o banco atraves da função include
-				include 'conecta.php';
-				//Colocando dentro de uma variavel a consulta que é realizada no banco de dados, esse consulta pega todos os campos da tabela "pessoa"
-				$query = $conn->query("SELECT * FROM pessoas");
-				//realizando um loop que percorre todos os dados da tabela, a função "fetch_assoc" retorna um array que contém os registros
-				while($row = $query->fetch_assoc()) {
-			?>
 			<tr>
-				<!-- loop vai percorrendo e printando na tela o nome na primeira coluna,  email na segunda, telefone na terceira, esporte na quarta e cor na quinta  -->
-				<td><?php echo $row['nome']; ?></td>
-				<td><?php echo $row['email']; ?></td>
-				<td><?php echo $row['telefone']; ?></td>
-				<td><?php echo $row['esporte_preferido']; ?></td>
-				<td><?php echo $row['cor_preferida']; ?></td>
-				<td>
-					<!-- ao clicar remove ou edita essa tabela, linkando para os arquivos "edita.php" e "remove.php" -->
-					<a href="edita.php?id=<?php echo $row['id']; ?>">Editar</a>
-					<a href="remover.php?id=<?php echo $row['id']; ?>">Remover</a>
-				</td>
+				<?php foreach ($contacts as $contact) :  ?>
+					<td><?= $contact->getName(); ?></td>
+					<td><?= $contact->getLaboratory(); ?></td>
+					<td><?= $contact->getDate(); ?></td>
+					<td><?= $contact->getQuantity(); ?></td>
+					<td><?= $contact->getReagent(); ?></td>
+					<td>
+						<a href="views/edita.php?id=<?= $contact->getId(); ?>">Editar</a>
+						<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover</button>
+					</td>
+				<?php endforeach; ?>
 			</tr>
-			<?php } ?>
 		</tbody>
 	</table>
 </body>
+
 </html>
