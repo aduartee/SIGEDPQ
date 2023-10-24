@@ -22,6 +22,11 @@ $contacts = $contactService->getAllContacts();
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script src="js/removeItem.js"></script>
+	<!-- BOXICONS -->
+	<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+	<!-- TOAST -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@12/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@12/dist/sweetalert2.all.min.js"></script>
 	<title>SIGEDPQ</title>
 </head>
 
@@ -48,7 +53,7 @@ $contacts = $contactService->getAllContacts();
 	</div>
 
 	<h2>SISTEMA INFORMATIZADO PARA GESTÃO DE ESTOQUE E DESCARTE DE PRODUTOS QUÍMICOS</h2>
-	<a href="adiciona.php">Insira os dados</a>
+	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php'">Insira os dados</button>
 	<br><br>
 	<table>
 		<thead>
@@ -59,6 +64,7 @@ $contacts = $contactService->getAllContacts();
 				<th>Quantidade</th>
 				<th>Reagente</th>
 				<th>Ações</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -71,7 +77,7 @@ $contacts = $contactService->getAllContacts();
 					<td><?= $contact->getReagent(); ?></td>
 					<td>
 						<a href="views/edita.php?id=<?= $contact->getId(); ?>">Editar</a>
-						<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover</button>
+						<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover <box-icon name='trash' class="pt-1"></box-icon></button>
 					</td>
 				<?php endforeach; ?>
 			</tr>
