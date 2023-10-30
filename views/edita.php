@@ -7,25 +7,29 @@ require_once BASE_URL . "/models/ContactService.php";
 
 $contact = new Contact();
 
-if (isset($_GET['id'])) $contact->getById($conn, $_GET['id']);
-?>
+$item = $contact->getById($conn, $_GET['id']);
 
+if($item == null): ?>
+	<h1>Registro não encontrado</h1>
+<?php else: ?>
 <body>
 	<div id="quadrado" class="animate__animated animate__zoomIn">
 		<h1>Editar dados</h1>
 		<form id="formulario" action="../controllers/itemController.php<?= isset($contact->id) ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()">
-			<input type="hidden" name="id" value="<?= $contact->getId(); ?>">
+			<input type="hidden" name="id" value="<?= $item->getId(); ?>">
 			<label for="name">Nome:</label>
-			<input type="text" id="name" name="name" value="<?= $contact->getName() ?>" required>
+			<input type="text" id="name" name="name" value="<?= $item->getName() ?>">
 			<label for="laboratory">Laboratório:</label>
-			<input type="text" id="laboratory" name="laboratory" value="<?= $contact->getLaboratory() ?>" required>
+			<input type="text" id="laboratory" name="laboratory" value="<?= $item->getLaboratory() ?>">
 			<label for="data">Data:</label>
-			<input type="date" id="data" name="data" value="<?= $contact->getDate() ?>" required>
+			<input type="date" id="data" name="data" value="<?= $item->getDate() ?>">
 			<label for="quantity">Quantidade:</label>
-			<input type="number" id="quantity" name="quantity" value="<?= $contact->getQuantity() ?>" required>
+			<input type="number" id="quantity" name="quantity" value="<?= $item->getQuantity() ?>" min="0" required>
 			<label for="reagent">Reagente:</label>
-			<input type="text" id="reagent" name="reagent" value="<?= $contact->getReagent() ?>" required>
+			<input type="text" id="reagent" name="reagent" value="<?= $item->getReagent() ?>">
 			<input type="submit" value="Salvar">
 			<a id="cancelar" href="../index.php">Cancelar</a>
 		</form>
 	</div>
+
+<?php endif; ?>

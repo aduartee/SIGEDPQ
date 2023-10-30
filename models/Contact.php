@@ -75,7 +75,7 @@ class Contact
                 $contact->setDate($row['data']);
                 $contact->setQuantity($row['quantidade']);
                 $contact->setReagent($row['reagente']);
-                
+
                 // var_dump($contact);
                 return $contact;
             }
