@@ -1,9 +1,9 @@
 <?php
+session_start();
 require_once "models/Contact.php";
 require_once "models/ContactService.php";
 require_once "conecta.php";
 $contactService = new ContactService($conn);
-
 $contacts = $contactService->getAllContacts();
 ?>
 
@@ -25,8 +25,8 @@ $contacts = $contactService->getAllContacts();
 	<!-- BOXICONS -->
 	<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 	<!-- TOAST -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@12/dist/sweetalert2.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@12/dist/sweetalert2.all.min.js"></script>
+	<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.all.min.js "></script>
+	<link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.min.css " rel="stylesheet">
 	<title>SIGEDPQ</title>
 </head>
 
@@ -76,13 +76,24 @@ $contacts = $contactService->getAllContacts();
 					<td><?= $contact->getQuantity(); ?></td>
 					<td><?= $contact->getReagent(); ?></td>
 					<td>
-						<a href="views/edita.php?id=<?= $contact->getId(); ?>">Editar</a>
-						<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover <box-icon name='trash' class="pt-1"></box-icon></button>
+						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</a>
+							<button class="btn btn-danger btnEdit" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover <box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
 					</td>
 				<?php endforeach; ?>
 			</tr>
 		</tbody>
 	</table>
+	<script>
+		<?php
+		if (isset($_SESSION['operation_result'])) { ?>
+			var result = "<?= $_SESSION['operation_result']; ?>";
+			if (result === 'insert') {
+				Swal.fire("Sucesso", "Inserção concluída com sucesso!", "success");
+			} else if (result === 'edit') {
+				Swal.fire("Sucesso", "Edição concluída com sucesso!", "success");
+			}
+			delete $_SESSION['operation_result'];
+		<?php } ?>
+	</script>
 </body>
-
 </html>

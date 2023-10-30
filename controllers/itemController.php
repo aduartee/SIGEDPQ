@@ -1,11 +1,12 @@
 <?php
-require_once("../models/Contact.php");
-require_once("../models/ContactService.php");
-require_once("../conecta.php");
-
-
+session_start();
+require_once("../config.php");
+require_once(BASE_URL . "/models/Contact.php");
+require_once(BASE_URL . "/models/ContactService.php");
+require_once(BASE_URL . "/conecta.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+$id = $_POST["id"];
 $name = $_POST["name"];
 $laboratory =  $_POST["laboratory"];
 $date = $_POST["data"];
@@ -14,6 +15,7 @@ $reagent =  $_POST["reagent"];
 
 $contact = new Contact();
 
+$contact->setId($id);
 $contact->setName($name);
 $contact->setLaboratory($laboratory);
 $contact->setDate($date);
@@ -23,30 +25,24 @@ $contact->setReagent($reagent);
 $contactService = new ContactService($conn);
 
 
-$action = isset($_GET['flag']) ? $_GET['flag'] : '';
+$action = (isset($_GET['flag']) && $_GET['flag'] != '') ? $_GET['flag'] : '';
+
+$success = false;
 
 if($action == 'insert') { 
 	$contactService->insertContacts($contact);
 	$success = true;
 } else {
 	$contactService->updateContacts($contact);
-	$sucess = false;
+	$success = false;
 }
-
-header('Loction: ../index.php');
 
 //TOAST
 if ($success) {
-	echo '<script>
-		Swal.fire("Sucesso", "Inserção concluída com sucesso!", "success")
-			.then(function() {
-				window.location.href = "../index.php";
-			});
-	</script>';
+    $_SESSION['operation_result'] = 'insert';
+	header('Location:../index.php');
 } else {
-	echo '<script>
-		Swal.fire("Erro", "Ocorreu um erro durante a inserção", "error");
-	</script>';
+    $_SESSION['operation_result'] = 'edit';
+	header('Location:../index.php');
 }
-
 }

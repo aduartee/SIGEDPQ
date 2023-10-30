@@ -13,6 +13,11 @@ class Contact
         return $this->id;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function getName()
     {
         return $this->name;
@@ -75,7 +80,7 @@ class Contact
                 $contact->setDate($row['data']);
                 $contact->setQuantity($row['quantidade']);
                 $contact->setReagent($row['reagente']);
-                
+
                 // var_dump($contact);
                 return $contact;
             }

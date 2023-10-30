@@ -46,14 +46,14 @@ class ContactService
 
     public function updateContacts(Contact $contact)
     {
-        $query = "UPDATE estoque_liberato SET nome = :name, labaratorio = :laboratory, quantidade = :quantity, data = :data, reagente = :reagent WHERE id = :id";
+        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $contact->getId());
-        $stmt->bindParam(':name', $contact->getName());
-        $stmt->bindParam(':laboratory', $contact->getLaboratory());
-        $stmt->bindParam(':quantity', $contact->getQuantity());
-        $stmt->bindParam(':date', $contact->getDate());
-        $stmt->bindParam(':reagent', $contact->getReagent());
+        $stmt->bindValue(':id', $contact->getId());
+        $stmt->bindValue(':name', $contact->getName());
+        $stmt->bindValue(':laboratory', $contact->getLaboratory());
+        $stmt->bindValue(':quantity', $contact->getQuantity());
+        $stmt->bindValue(':date', $contact->getDate());
+        $stmt->bindValue(':reagent', $contact->getReagent());
         $stmt->execute();
     }
 }
