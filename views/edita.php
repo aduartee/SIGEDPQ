@@ -15,8 +15,8 @@ if($item == null): ?>
 <body>
 	<div id="quadrado" class="animate__animated animate__zoomIn">
 		<h1>Editar dados</h1>
-		<form id="formulario" action="../controllers/itemController.php<?= isset($contact->id) ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()">
-			<input type="hidden" name="id" value="<?= $item->getId(); ?>">
+		<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null) ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()">
+			<input type="hidden" name="id" value="<?= $_GET['id'] ?>">
 			<label for="name">Nome:</label>
 			<input type="text" id="name" name="name" value="<?= $item->getName() ?>">
 			<label for="laboratory">Laboratório:</label>
