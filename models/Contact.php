@@ -64,6 +64,8 @@ class Contact
         $this->reagent = $reagent;
     }
 
+   
+
     public static function getById($conn, $id)
     {
         try {
