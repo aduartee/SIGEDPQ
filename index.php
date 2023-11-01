@@ -53,8 +53,7 @@ $contacts = $contactService->getAllContacts();
 	</div>
 
 	<h2>SISTEMA INFORMATIZADO PARA GESTÃO DE ESTOQUE E DESCARTE DE PRODUTOS QUÍMICOS</h2>
-	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php'">Insira os dados</button>
-	<br><br>
+	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados</button>
 	<table>
 		<thead>
 			<tr>
@@ -72,15 +71,15 @@ $contacts = $contactService->getAllContacts();
 				<?php foreach ($contacts as $contact) :  ?>
 					<td><?= $contact->getName(); ?></td>
 					<td><?= $contact->getLaboratory(); ?></td>
-					<td><?= $contact->getDate(); ?></td>
+					<td><?= $contactService->formatData($contact->getDate()); ?></td>
 					<td><?= $contact->getQuantity(); ?></td>
 					<td><?= $contact->getReagent(); ?></td>
 					<td>
 						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</a>
-							<button class="btn btn-danger btnEdit" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover <box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
+							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover <box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
 					</td>
-				<?php endforeach; ?>
 			</tr>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 	<script>

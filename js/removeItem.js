@@ -1,3 +1,4 @@
+
 function removeItem(id_item){
     $('#exampleModal').modal('show');
 

@@ -8,6 +8,11 @@ class ContactService
         $this->conn = $conn;
     }
 
+    public function formatData($data)
+    {
+        return date('d/m/Y', strtotime($data));
+    }
+
     public function getAllContacts()
     {
         $contacts = [];
@@ -29,20 +34,19 @@ class ContactService
     public function insertContacts(Contact $contact)
     {
         try {
-            $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente) VALUES (:name, :laboratory, :quantity, :date, reagent)";
+            $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente) VALUES (:name, :laboratory, :quantity, :date, :reagent)";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':name', $contact->getName());
-            $stmt->bindParam(':laboratory', $contact->getLaboratory());
-            $stmt->bindParam(':quantity', $contact->getQuantity());
-            $stmt->bindParam(':date', $contact->getDate());
-            $stmt->bindParam(':reagent', $contact->getReagent());
+            $stmt->bindValue(':name', $contact->getName());
+            $stmt->bindValue(':laboratory', $contact->getLaboratory());
+            $stmt->bindValue(':quantity', $contact->getQuantity());
+            $stmt->bindValue(':date', $contact->getDate());
+            $stmt->bindValue(':reagent', $contact->getReagent());
             $stmt->execute();
-            return true;
         } catch (PDOException $e) {
             error_log("Erro ao inserir" . $e);
-            return false;
         }
     }
+
 
     public function updateContacts(Contact $contact)
     {
@@ -55,5 +59,9 @@ class ContactService
         $stmt->bindValue(':date', $contact->getDate());
         $stmt->bindValue(':reagent', $contact->getReagent());
         $stmt->execute();
+    }
+
+    public function removeItem(){
+        $query = "UPDATE estoque_laboratorio SET st = 2 WHERE id = :id";
     }
 }
