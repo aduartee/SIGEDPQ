@@ -6,43 +6,48 @@ require_once(BASE_URL . "/models/ContactService.php");
 require_once(BASE_URL . "/conecta.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-$id = $_POST["id"];
-$name = $_POST["name"];
-$laboratory =  $_POST["laboratory"];
-$date = $_POST["data"];
-$quantity =  $_POST["quantity"];
-$reagent =  $_POST["reagent"];
+	$id = $_POST["id"];
+	$name = $_POST["name"];
+	$laboratory =  $_POST["laboratory"];
+	$date = $_POST["data"];
+	$quantity =  $_POST["quantity"];
+	$reagent =  $_POST["reagent"];
 
-$contact = new Contact();
+	$contact = new Contact();
 
-$contact->setId($id);
-$contact->setName($name);
-$contact->setLaboratory($laboratory);
-$contact->setDate($date);
-$contact->setQuantity($quantity);
-$contact->setReagent($reagent);
+	$contact->setId($id);
+	$contact->setName($name);
+	$contact->setLaboratory($laboratory);
+	$contact->setDate($date);
+	$contact->setQuantity($quantity);
+	$contact->setReagent($reagent);
 
-$contactService = new ContactService($conn);
+	$contactService = new ContactService($conn);
 
 
-$action = (isset($_GET['flag']) && $_GET['flag'] != '') ? $_GET['flag'] : '';
+	$action = (isset($_GET['flag']) && $_GET['flag'] != '') ? $_GET['flag'] : '';
 
-$success = false;
-
-if($action == 'insert') { 
-	$contactService->insertContacts($contact);
-	$success = true;
-} else {
-	$contactService->updateContacts($contact);
 	$success = false;
-}
 
-//TOAST
-if ($success) {
-    $_SESSION['operation_result'] = 'insert';
-	header('Location:../index.php');
+	if ($action == 'insert') {
+		$contactService->insertContacts($contact);
+		$success = true;
+	} else {
+		$contactService->updateContacts($contact);
+		$success = false;
+	}
+
+	//TOAST
+	if ($success) {
+		$_SESSION['operation_result'] = 'insert';
+		header('Location:../index.php');
+	} else {
+		$_SESSION['operation_result'] = 'edit';
+		header('Location:../index.php');
+	}
 } else {
-    $_SESSION['operation_result'] = 'edit';
+	$contactService = new ContactService($conn);
+	$contactService->removeItem($_GET['id']);
+	$_SESSION['operation_result'] = 'remove';
 	header('Location:../index.php');
-}
 }
