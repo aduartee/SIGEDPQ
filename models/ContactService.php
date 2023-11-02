@@ -16,7 +16,7 @@ class ContactService
     public function getAllContacts()
     {
         $contacts = [];
-        $query = $this->conn->query("SELECT * FROM estoque_laboratorio");
+        $query = $this->conn->query("SELECT * FROM estoque_laboratorio WHERE st = 1");
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $contact = new Contact();
@@ -61,7 +61,10 @@ class ContactService
         $stmt->execute();
     }
 
-    public function removeItem(){
+    public function removeItem($id){
         $query = "UPDATE estoque_laboratorio SET st = 2 WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
     }
 }

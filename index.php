@@ -76,10 +76,10 @@ $contacts = $contactService->getAllContacts();
 					<td><?= $contact->getReagent(); ?></td>
 					<td>
 						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</a>
-							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" data-target="#exampleModal" onclick="removeItem(<?= $contact->getId(); ?>)">Remover <box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
+							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" data-target="#exampleModal" onclick="window.location.href = 'controllers/itemController.php?id=<?= $contact->getId() ?>'">Remover <box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
 					</td>
 			</tr>
-			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</tbody>
 	</table>
 	<script>
@@ -95,4 +95,5 @@ $contacts = $contactService->getAllContacts();
 		<?php } ?>
 	</script>
 </body>
+
 </html>
