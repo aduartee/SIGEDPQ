@@ -66,5 +66,6 @@ class ContactService
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+        return true;
     }
 }
