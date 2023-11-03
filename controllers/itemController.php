@@ -5,7 +5,7 @@ require_once(BASE_URL . "/models/Contact.php");
 require_once(BASE_URL . "/models/ContactService.php");
 require_once(BASE_URL . "/conecta.php");
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$id = $_POST["id"];
 	$name = $_POST["name"];
 	$laboratory =  $_POST["laboratory"];
@@ -46,8 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		header('Location:../index.php');
 	}
 } else {
-	$contactService = new ContactService($conn);
-	$contactService->removeItem($_GET['id']);
-	$_SESSION['operation_result'] = 'remove';
-	header('Location:../index.php');
+    $contactService = new ContactService($conn);
+    $id = $_POST['id'];
+    
+    if ($contactService->removeItem($id)) {
+        http_response_code(200); 
+    } else {
+        http_response_code(500); 
+    }
 }

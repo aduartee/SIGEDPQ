@@ -3,6 +3,7 @@ session_start();
 require_once "models/Contact.php";
 require_once "models/ContactService.php";
 require_once "conecta.php";
+require_once "template/base.php";
 $contactService = new ContactService($conn);
 $contacts = $contactService->getAllContacts();
 ?>
@@ -31,30 +32,9 @@ $contacts = $contactService->getAllContacts();
 </head>
 
 <body>
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					...
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
-					<button type="button" class="btn btn-primary" id="remove">Remover</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<h2>SISTEMA INFORMATIZADO PARA GESTÃO DE ESTOQUE E DESCARTE DE PRODUTOS QUÍMICOS</h2>
+	<h1 class="main-title">SISTEMA INFORMATIZADO PARA GESTÃO DE ESTOQUE E DESCARTE DE PRODUTOS QUÍMICOS</h1>
 	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados</button>
-	<table>
+	<table class="custom-table">
 		<thead>
 			<tr>
 				<th>Nome</th>
@@ -63,25 +43,26 @@ $contacts = $contactService->getAllContacts();
 				<th>Quantidade</th>
 				<th>Reagente</th>
 				<th>Ações</th>
-				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<?php foreach ($contacts as $contact) :  ?>
+			<?php foreach ($contacts as $contact) :  ?>
+				<tr class="color-change" data-id="<?= $contact->getId(); ?>">
 					<td><?= $contact->getName(); ?></td>
 					<td><?= $contact->getLaboratory(); ?></td>
 					<td><?= $contactService->formatData($contact->getDate()); ?></td>
 					<td><?= $contact->getQuantity(); ?></td>
 					<td><?= $contact->getReagent(); ?></td>
 					<td>
-						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</a>
-							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" data-target="#exampleModal" onclick="window.location.href = 'controllers/itemController.php?id=<?= $contact->getId() ?>'">Remover <box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
+						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</button>
+						<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
 					</td>
-			</tr>
-		<?php endforeach; ?>
+				</tr>
+
+			<?php endforeach; ?>
 		</tbody>
 	</table>
+	<script src="js/teste.js"></script>
 	<script>
 		<?php
 		if (isset($_SESSION['operation_result'])) { ?>
