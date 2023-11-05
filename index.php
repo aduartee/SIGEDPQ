@@ -16,7 +16,7 @@ $contacts = $contactService->getAllContacts();
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
-	<link rel="shortcut icon" href="imagens/favicon_crud.png" type="image/x-icon" />
+	<link rel="shortcut icon" href="imagens/favicon-32x32.png" type="image/x-icon" />
 	<!-- JQUERY -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<!-- BOOTSTRAP -->
@@ -32,27 +32,41 @@ $contacts = $contactService->getAllContacts();
 </head>
 
 <body>
-	<h1 class="main-title">SISTEMA INFORMATIZADO PARA GESTÃO DE ESTOQUE E DESCARTE DE PRODUTOS QUÍMICOS</h1>
+	<div class="container">
+		<div class="image-container">
+			<img src="imagens/quimica.jpg" alt="Descrição da imagem" width="200" height="400">
+		</div>
+		<div class="text-container">
+			<h1 class="main-title">SISTEMA INFORMATIZADO<br>PARA GESTÃO DE ESTOQUE E DESCARTE<br>DE PRODUTOS QUÍMICOS</h1>
+		</div>
+	</div>
+
 	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados</button>
 	<table class="custom-table">
 		<thead>
 			<tr>
-				<th>Nome</th>
+				<th>Numero de controle</th>
+				<th>Nome do responsável</th>
 				<th>Laboratório</th>
 				<th>Data</th>
 				<th>Quantidade</th>
 				<th>Reagente</th>
+				<th>Grupo do residuo</th>
+				<th>Data da coleta</th>
 				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($contacts as $contact) :  ?>
 				<tr class="color-change" data-id="<?= $contact->getId(); ?>">
+					<td><?= $contact->getId(); ?></td>
 					<td><?= $contact->getName(); ?></td>
 					<td><?= $contact->getLaboratory(); ?></td>
 					<td><?= $contactService->formatData($contact->getDate()); ?></td>
 					<td><?= $contact->getQuantity(); ?></td>
 					<td><?= $contact->getReagent(); ?></td>
+					<td><?= $contactService->filterResidueGroup($contact->getResidueGroup()) ?></td>
+					<td></td>
 					<td>
 						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</button>
 						<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
