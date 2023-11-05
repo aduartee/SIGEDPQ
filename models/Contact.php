@@ -7,6 +7,7 @@ class Contact
     public $date;
     public $quantity;
     public $reagent;
+    public $residueGroup;
 
     public function getId()
     {
@@ -63,7 +64,16 @@ class Contact
     {
         $this->reagent = $reagent;
     }
-    
+    public function getResidueGroup()
+    {
+        return $this->residueGroup;
+    }
+
+    public function setResidueGroup($residueGroup)
+    {
+        $this->residueGroup = $residueGroup;
+    }
+
     public static function getById($conn, $id)
     {
         try {
@@ -80,7 +90,7 @@ class Contact
                 $contact->setDate($row['data']);
                 $contact->setQuantity($row['quantidade']);
                 $contact->setReagent($row['reagente']);
-
+                $contact->setResidueGroup($row['grupo_residuo']);
                 // var_dump($contact);
                 return $contact;
             }

@@ -10,17 +10,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$name = $_POST["name"];
 	$laboratory =  $_POST["laboratory"];
 	$date = $_POST["data"];
+	$date_sql = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
 	$quantity =  $_POST["quantity"];
 	$reagent =  $_POST["reagent"];
+	$residueGroup =  $_POST["residueGroup"];
 
 	$contact = new Contact();
 
 	$contact->setId($id);
 	$contact->setName($name);
 	$contact->setLaboratory($laboratory);
-	$contact->setDate($date);
+	$contact->setDate($date_sql);
 	$contact->setQuantity($quantity);
 	$contact->setReagent($reagent);
+	$contact->setResidueGroup($residueGroup);
 
 	$contactService = new ContactService($conn);
 

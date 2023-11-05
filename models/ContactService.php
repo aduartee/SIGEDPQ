@@ -26,6 +26,7 @@ class ContactService
             $contact->date = $row["data"];
             $contact->quantity = $row["quantidade"];
             $contact->reagent = $row["reagente"];
+            $contact->residueGroup = $row["grupo_residuo"];
             $contacts[] = $contact;
         }
         return $contacts;
@@ -34,13 +35,14 @@ class ContactService
     public function insertContacts(Contact $contact)
     {
         try {
-            $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente) VALUES (:name, :laboratory, :quantity, :date, :reagent)";
+            $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente, grupo_residuo) VALUES (:name, :laboratory, :quantity, :date, :reagent, :residueGroup)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':name', $contact->getName());
             $stmt->bindValue(':laboratory', $contact->getLaboratory());
             $stmt->bindValue(':quantity', $contact->getQuantity());
             $stmt->bindValue(':date', $contact->getDate());
             $stmt->bindValue(':reagent', $contact->getReagent());
+            $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
             $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erro ao inserir" . $e);
@@ -50,7 +52,7 @@ class ContactService
 
     public function updateContacts(Contact $contact)
     {
-        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent WHERE id = :id";
+        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent, grupo_residuo = :residueGroup WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $contact->getId());
         $stmt->bindValue(':name', $contact->getName());
@@ -58,14 +60,37 @@ class ContactService
         $stmt->bindValue(':quantity', $contact->getQuantity());
         $stmt->bindValue(':date', $contact->getDate());
         $stmt->bindValue(':reagent', $contact->getReagent());
+        $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
         $stmt->execute();
     }
 
-    public function removeItem($id){
+    public function removeItem($id)
+    {
         $query = "UPDATE estoque_laboratorio SET st = 2 WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return true;
+    }
+
+    public function filterResidueGroup($residue)
+    {
+        $mapping = [
+            'soh' => 0,
+            'sonh' => 1,
+            'sopp' => 2,
+            'aquaso' => 3,
+            'aquosocromo' => 4,
+            'aquosocianeto' => 5,
+            'solido' => 6
+        ];
+
+        if (isset($mapping[$residue])) {
+            $position = $mapping[$residue];
+            $listResidue = ['SOH', 'SOñH', "SOPP", 'Aquoso sem cromo e cianeto', 'Aquoso com cromo', 'Aquoso com cianeto', 'Sólido'];
+            return $listResidue[$position];
+        } else {
+            return "Valor inválido";
+        }
     }
 }
