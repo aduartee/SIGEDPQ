@@ -49,10 +49,10 @@ $contacts = $contactService->getAllContacts();
 				<th>Nome do responsável</th>
 				<th>Laboratório</th>
 				<th>Data</th>
+				<th>Data da coleta</th>
 				<th>Quantidade</th>
 				<th>Reagente</th>
 				<th>Grupo do residuo</th>
-				<th>Data da coleta</th>
 				<th>Ações</th>
 			</tr>
 		</thead>
@@ -63,10 +63,10 @@ $contacts = $contactService->getAllContacts();
 					<td><?= $contact->getName(); ?></td>
 					<td><?= $contact->getLaboratory(); ?></td>
 					<td><?= $contactService->formatData($contact->getDate()); ?></td>
+					<td><?= $contactService->formatData($contact->getPickupDate()); ?></td>
 					<td><?= $contact->getQuantity(); ?></td>
 					<td><?= $contact->getReagent(); ?></td>
 					<td><?= $contactService->filterResidueGroup($contact->getResidueGroup()) ?></td>
-					<td></td>
 					<td>
 						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</button>
 						<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
@@ -90,5 +90,39 @@ $contacts = $contactService->getAllContacts();
 		<?php } ?>
 	</script>
 </body>
+
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Numero de controle</th>
+				<th>Nome do responsável</th>
+				<th>Laboratório</th>
+				<th>Data</th>
+				<th>Data da coleta</th>
+				<th>Quantidade</th>
+				<th>Reagente</th>
+				<th>Grupo do residuo</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?= $contact->getId(); ?></td>
+				<td><?= $contact->getName(); ?></td>
+				<td><?= $contact->getLaboratory(); ?></td>
+				<td><?= $contactService->formatData($contact->getDate()); ?></td>
+				<td><?= $contactService->formatData($contact->getPickupDate()); ?></td>
+				<td><?= $contact->getQuantity(); ?></td>
+				<td><?= $contact->getReagent(); ?></td>
+				<td><?= $contactService->filterResidueGroup($contact->getResidueGroup()) ?></td>
+				<td>
+					<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</button>
+					<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 </html>
