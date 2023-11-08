@@ -24,6 +24,8 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 				<input type="text" id="laboratory" name="laboratory" required value="<?= (!empty($item) && !empty($item->getLaboratory())) ? $item->getLaboratory()  : ''; ?>">
 				<label for="data">Data:</label>
 				<input type="text" id="data" name="data" required value="<?= !empty($item) && !empty($item->getDate()) ? date('d/m/Y', strtotime($item->getDate())) : date('d/m/Y') ?>">
+				<label for="pickupDate">Data de coleta:</label>
+				<input type="text" id="pickupDate" name="pickupDate" required value="<?= !empty($item) && !empty($item->getPickupDate()) ? date('d/m/Y', strtotime($item->getPickupDate())) : '' ?>">
 				<label for="quantity">Quantidade:<label>
 				<input type="number" id="quantity" name="quantity" required value="<?= (!empty($item) && !empty($item->getQuantity())) ? $item->getQuantity() : ''; ?>" min="0" required>
 				<label for="reagent">Reagente:</label>

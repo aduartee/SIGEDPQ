@@ -42,53 +42,55 @@ $contacts = $contactService->getAllContacts();
 	</div>
 
 	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados</button>
-	<table class="custom-table">
-		<thead>
-			<tr>
-				<th>Numero de controle</th>
-				<th>Nome do responsável</th>
-				<th>Laboratório</th>
-				<th>Data</th>
-				<th>Quantidade</th>
-				<th>Reagente</th>
-				<th>Grupo do residuo</th>
-				<th>Data da coleta</th>
-				<th>Ações</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($contacts as $contact) :  ?>
-				<tr class="color-change" data-id="<?= $contact->getId(); ?>">
-					<td><?= $contact->getId(); ?></td>
-					<td><?= $contact->getName(); ?></td>
-					<td><?= $contact->getLaboratory(); ?></td>
-					<td><?= $contactService->formatData($contact->getDate()); ?></td>
-					<td><?= $contact->getQuantity(); ?></td>
-					<td><?= $contact->getReagent(); ?></td>
-					<td><?= $contactService->filterResidueGroup($contact->getResidueGroup()) ?></td>
-					<td></td>
-					<td>
-						<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</button>
-						<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
-					</td>
+	<div class="container-table">
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="text-center">Numero de controle</th>
+					<th class="text-center">Nome do responsável</th>
+					<th class="text-center">Laboratório</th>
+					<th class="text-center">Data</th>
+					<th class="text-center">Data da coleta</th>
+					<th class="text-center">Quantidade</th>
+					<th class="text-center">Reagente</th>
+					<th class="text-center">Grupo do residuo</th>
+					<th class="text-center">Ações</th>
 				</tr>
-
-			<?php endforeach; ?>
-		</tbody>
+			</thead>
+			<tbody>
+				<?php foreach ($contacts as $contact) :  ?>
+					<tr class="color-change " data-id="<?= $contact->getId(); ?>">
+						<td class="text-center"><?= $contact->getId(); ?></td>
+						<td class="text-center"><?= $contact->getName(); ?></td>
+						<td class="text-center"><?= $contact->getLaboratory(); ?></td>
+						<td class="text-center"><?= $contactService->formatData($contact->getDate()); ?></td>
+						<td class="text-center"><?= $contactService->formatData($contact->getPickupDate()); ?></td>
+						<td class="text-center"><?= $contact->getQuantity(); ?></td>
+						<td class="text-center"><?= $contact->getReagent(); ?></td>
+						<td class="text-center"><?= $contactService->filterResidueGroup($contact->getResidueGroup()) ?></td>
+						<td>
+							<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar</button>
+							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<box-icon name='trash' color="white" class="bx-xs"></box-icon></button>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 	</table>
-	<script src="js/teste.js"></script>
-	<script>
-		<?php
-		if (isset($_SESSION['operation_result'])) { ?>
-			var result = "<?= $_SESSION['operation_result']; ?>";
-			if (result === 'insert') {
-				Swal.fire("Sucesso", "Inserção concluída com sucesso!", "success");
-			} else if (result === 'edit') {
-				Swal.fire("Sucesso", "Edição concluída com sucesso!", "success");
-			}
-			delete $_SESSION['operation_result'];
-		<?php } ?>
-	</script>
-</body>
 
 </html>
+<script src="js/teste.js"></script>
+<script>
+	<?php
+	if (isset($_SESSION['operation_result'])) { ?>
+		var result = "<?= $_SESSION['operation_result']; ?>";
+		if (result === 'insert') {
+			Swal.fire("Sucesso", "Inserção concluída com sucesso!", "success");
+		} else if (result === 'edit') {
+			Swal.fire("Sucesso", "Edição concluída com sucesso!", "success");
+		}
+		delete $_SESSION['operation_result'];
+	<?php } ?>
+</script>
+</body>

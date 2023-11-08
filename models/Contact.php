@@ -8,6 +8,7 @@ class Contact
     public $quantity;
     public $reagent;
     public $residueGroup;
+    public $pickupDate;
 
     public function getId()
     {
@@ -74,6 +75,16 @@ class Contact
         $this->residueGroup = $residueGroup;
     }
 
+    public function getPickupDate()
+    {
+        return $this->pickupDate;
+    }
+
+    public function setPickupDate($pickupDate)
+    {
+        $this->pickupDate = $pickupDate;
+    }
+
     public static function getById($conn, $id)
     {
         try {
@@ -91,6 +102,7 @@ class Contact
                 $contact->setQuantity($row['quantidade']);
                 $contact->setReagent($row['reagente']);
                 $contact->setResidueGroup($row['grupo_residuo']);
+                $contact->setPickupDate($row['data_coleta']);
                 // var_dump($contact);
                 return $contact;
             }

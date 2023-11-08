@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$laboratory =  $_POST["laboratory"];
 	$date = $_POST["data"];
 	$date_sql = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+	$pickupDate = $_POST["pickupDate"];
+	$pickupDate_sql = date('Y-m-d', strtotime(str_replace('/', '-', $pickupDate)));
 	$quantity =  $_POST["quantity"];
 	$reagent =  $_POST["reagent"];
 	$residueGroup =  $_POST["residueGroup"];
@@ -21,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$contact->setName($name);
 	$contact->setLaboratory($laboratory);
 	$contact->setDate($date_sql);
+	$contact->setPickupDate($pickupDate_sql);
 	$contact->setQuantity($quantity);
 	$contact->setReagent($reagent);
 	$contact->setResidueGroup($residueGroup);
