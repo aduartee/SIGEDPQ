@@ -16,7 +16,7 @@ $contacts = $contactService->getAllContacts();
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
-	<link rel="shortcut icon" href="imagens/favicon-32x32.png" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon-32x32.png" type="image/x-icon" />
 	<!-- JQUERY -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<!-- BOOTSTRAP -->
@@ -34,7 +34,7 @@ $contacts = $contactService->getAllContacts();
 <body>
 	<div class="container">
 		<div class="image-container">
-			<img src="imagens/quimica.jpg" alt="Descrição da imagem" width="200" height="400">
+			<img src="images/quimica.jpg" alt="Descrição da imagem" width="200" height="400">
 		</div>
 		<div class="text-container">
 			<h1 class="main-title">SISTEMA INFORMATIZADO<br>PARA GESTÃO DE ESTOQUE E DESCARTE<br>DE PRODUTOS QUÍMICOS</h1>
@@ -47,6 +47,7 @@ $contacts = $contactService->getAllContacts();
 			<thead>
 				<tr>
 					<th class="text-center">Numero de controle</th>
+					<th class="text-center">Nome do item</th>
 					<th class="text-center">Nome do responsável</th>
 					<th class="text-center">Laboratório</th>
 					<th class="text-center">Data</th>
@@ -61,6 +62,7 @@ $contacts = $contactService->getAllContacts();
 				<?php foreach ($contacts as $contact) :  ?>
 					<tr class="color-change " data-id="<?= $contact->getId(); ?>">
 						<td class="text-center"><?= $contact->getId(); ?></td>
+						<td class="text-center"><?= $contact->getItemName(); ?></td>
 						<td class="text-center"><?= $contact->getName(); ?></td>
 						<td class="text-center"><?= $contact->getLaboratory(); ?></td>
 						<td class="text-center"><?= $contactService->formatData($contact->getDate()); ?></td>

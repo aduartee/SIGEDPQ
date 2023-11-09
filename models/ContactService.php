@@ -35,6 +35,19 @@ class ContactService
         return $contacts;
     }
 
+    public function updateImagePath($id, $imagePath)
+    {
+        try {
+            $query = "UPDATE estoque_laboratorio SET caminho_imagem = :imagePath WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':imagePath', $imagePath);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erro ao atualizar caminho da imagem" . $e);
+        }
+    }
+
     public function insertContacts(Contact $contact)
     {
         try {
@@ -47,8 +60,8 @@ class ContactService
             $stmt->bindValue(':reagent', $contact->getReagent());
             $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
             $stmt->bindValue(':pickupDate', $contact->getPickupDate());
-            $stmt->bindValue(':description',$contact->getDescription());
-            $stmt->bindValue(':itemName',$contact->getItemName());
+            $stmt->bindValue(':description', $contact->getDescription());
+            $stmt->bindValue(':itemName', $contact->getItemName());
             $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erro ao inserir" . $e);
@@ -58,7 +71,7 @@ class ContactService
 
     public function updateContacts(Contact $contact)
     {
-        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName WHERE id = :id";
+        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName, caminho_image = :imagePath WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $contact->getId());
         $stmt->bindValue(':name', $contact->getName());
@@ -69,8 +82,9 @@ class ContactService
         $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
         $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
         $stmt->bindValue(':pickupDate', $contact->getPickupDate());
-        $stmt->bindValue(':description',$contact->getDescription());
-        $stmt->bindValue(':itemName',$contact->getItemName());
+        $stmt->bindValue(':description', $contact->getDescription());
+        $stmt->bindValue(':itemName', $contact->getItemName());
+        $stmt->bindValue(':imagePath', $contact->getImagePath());
         $stmt->execute();
     }
 

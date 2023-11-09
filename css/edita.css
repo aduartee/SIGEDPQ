@@ -28,7 +28,13 @@ h2::after {
 }
 
 .form-group{
+    margin-top: 3%;
     margin-bottom: 15px;
+}
+
+.space-items{
+    margin-right: 6%;
+    margin-bottom: 30px;
 }
 /* 
 .form-control { 
@@ -40,7 +46,13 @@ h2::after {
 }
 
 .small-group{
-    width: 120px;
+    width: 18%;
+    
+}
+
+.tiny-group{
+    width: 8%;
+
 }
 
 h1 {
@@ -69,4 +81,9 @@ h1 {
     flex: 2;
     padding: 20px;
     margin-left: 200px;
+}
+
+.item-description label {
+    margin-bottom: 8px;
+    font-weight: 600;
 }

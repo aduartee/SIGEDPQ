@@ -11,6 +11,7 @@ class Contact
     public $residueGroup;
     public $pickupDate;
     public $description; 
+    public $imagePath;
 
     public function getId()
     {
@@ -105,6 +106,15 @@ class Contact
     public function setItemName($itemName)
     {
         $this->itemName = $itemName;
+    }
+
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
+    public function setImagePath($uploadFile)
+    {
+        $this->imagePath = $uploadFile;
     }
 
     public static function getById($conn, $id)

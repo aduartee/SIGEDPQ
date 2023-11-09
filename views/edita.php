@@ -20,12 +20,12 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 				<div class="item-info">
 					<div class="item-image">
 						<h2 class="mb-3"><?= (!empty($item) && !empty($item->getItemName())) ? $item->getItemName() : ''; ?></h2>
-						<img src="../imagens/itemExample.jpeg" alt="Item Image" class="img-fluid">
+						<!-- IMAGEM QUE O USARIO MANDA -->
+						<img src="../images/itemExample.jpeg" alt="Item Image" class="img-fluid">
 					</div>
 
 					<div class="item-description">
-						<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null && $_GET['id'] != '') ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()">
-							<input type="hidden" name="id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
+					<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null && $_GET['id'] != '') ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()" enctype="multipart/form-data">							<input type="hidden" name="id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
 							<div class="large-group">
 								<div class="form-group">
 									<label for="itemName">Nome do item:</label>
@@ -42,6 +42,10 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 								<div class="form-group">
 									<label for="laboratory">Laboratório:</label>
 									<input type="text" id="laboratory" name="laboratory" class="form-control" required value="<?= (!empty($item) && !empty($item->getLaboratory())) ? $item->getLaboratory() : ''; ?>">
+								</div>
+								<div class="form-group">
+									<label for="image">Escolha uma imagem:</label>
+									<input type="file" class="form-control" id="image" name="image" accept="image/*">
 								</div>
 								<div class="form-group">
 									<label for="residueGroup">Grupo do resíduo:</label>
@@ -62,20 +66,20 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 									</select>
 								</div>
 							</div>
-							<div class="small-group">
-								<div class="form-group">
+							<div class="d-flex flex-row">
+								<div class="form-group space-items small-group">
 									<label for="data">Data:</label>
 									<input type="text" id="data" name="data" class="form-control" required value="<?= !empty($item) && !empty($item->getDate()) ? date('d/m/Y', strtotime($item->getDate())) : date('d/m/Y') ?>">
 								</div>
-								<div class="form-group">
+								<div class="form-group space-items small-group">
 									<label for="pickupDate">Data de coleta:</label>
 									<input type="text" id="pickupDate" name="pickupDate" class="form-control" required value="<?= !empty($item) && !empty($item->getPickupDate()) ? date('d/m/Y', strtotime($item->getPickupDate())) : '' ?>">
 								</div>
-								<div class="form-group">
+								<div class="form-group space-items tiny-group">
 									<label for="quantity">Quantidade:</label>
 									<input type="number" id="quantity" name="quantity" class="form-control" required value="<?= (!empty($item) && !empty($item->getQuantity())) ? $item->getQuantity() : ''; ?>" min="0" required>
 								</div>
-								<div class="form-group">
+								<div class="form-group space-items tiny-group">
 									<label for="reagent">Reagente:</label>
 									<input type="text" id="reagent" name="reagent" class="form-control" required value="<?= (!empty($item) && !empty($item->getReagent())) ? $item->getReagent() : ''; ?>">
 								</div>

@@ -32,6 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$contact->setResidueGroup($residueGroup);
 	$contact->setDescription($description);
 
+	if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+        $uploadDir = '../images/images/itemImage/';
+        $imagePath = $uploadDir . basename($_FILES['imagem']['name']);
+
+        if (move_uploaded_file($_FILES['imagem']['tmp_name'], $imagePath)) {
+            $contact->setImagePath($imagePath);
+   			$contactService->updateImagePath($contact->getId(), $imagePath);
+        } else {
+            echo 'Erro ao mover o arquivo.';
+        }
+    }
+
 	$contactService = new ContactService($conn);
 
 
