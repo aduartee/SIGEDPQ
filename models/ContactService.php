@@ -28,6 +28,8 @@ class ContactService
             $contact->reagent = $row["reagente"];
             $contact->residueGroup = $row["grupo_residuo"];
             $contact->pickupDate = $row["data_coleta"];
+            $contact->description = $row["descricao"];
+            $contact->itemName = $row["nome_item"];
             $contacts[] = $contact;
         }
         return $contacts;
@@ -36,7 +38,7 @@ class ContactService
     public function insertContacts(Contact $contact)
     {
         try {
-            $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente, grupo_residuo, data_coleta) VALUES (:name, :laboratory, :quantity, :date, :reagent, :residueGroup, :pickupDate)";
+            $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente, grupo_residuo, data_coleta, descricao, nome_item) VALUES (:name, :laboratory, :quantity, :date, :reagent, :residueGroup, :pickupDate, :description, :itemName)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':name', $contact->getName());
             $stmt->bindValue(':laboratory', $contact->getLaboratory());
@@ -45,6 +47,8 @@ class ContactService
             $stmt->bindValue(':reagent', $contact->getReagent());
             $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
             $stmt->bindValue(':pickupDate', $contact->getPickupDate());
+            $stmt->bindValue(':description',$contact->getDescription());
+            $stmt->bindValue(':itemName',$contact->getItemName());
             $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erro ao inserir" . $e);
@@ -54,7 +58,7 @@ class ContactService
 
     public function updateContacts(Contact $contact)
     {
-        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent, grupo_residuo = :residueGroup,  data_coleta = :pickupDate WHERE id = :id";
+        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $contact->getId());
         $stmt->bindValue(':name', $contact->getName());
@@ -65,6 +69,8 @@ class ContactService
         $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
         $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
         $stmt->bindValue(':pickupDate', $contact->getPickupDate());
+        $stmt->bindValue(':description',$contact->getDescription());
+        $stmt->bindValue(':itemName',$contact->getItemName());
         $stmt->execute();
     }
 

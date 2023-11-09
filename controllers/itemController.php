@@ -8,6 +8,7 @@ require_once(BASE_URL . "/conecta.php");
 if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$id = $_POST["id"];
 	$name = $_POST["name"];
+	$itemName = $_POST["itemName"];
 	$laboratory =  $_POST["laboratory"];
 	$date = $_POST["data"];
 	$date_sql = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
@@ -16,17 +17,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$quantity =  $_POST["quantity"];
 	$reagent =  $_POST["reagent"];
 	$residueGroup =  $_POST["residueGroup"];
+	$description = $_POST["description"];
 
 	$contact = new Contact();
 
 	$contact->setId($id);
 	$contact->setName($name);
+	$contact->setItemName($itemName);
 	$contact->setLaboratory($laboratory);
 	$contact->setDate($date_sql);
 	$contact->setPickupDate($pickupDate_sql);
 	$contact->setQuantity($quantity);
 	$contact->setReagent($reagent);
 	$contact->setResidueGroup($residueGroup);
+	$contact->setDescription($description);
 
 	$contactService = new ContactService($conn);
 
