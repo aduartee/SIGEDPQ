@@ -2,6 +2,7 @@
 class Contact
 {
     public $id;
+    public $itemName;
     public $name;
     public $laboratory;
     public $date;
@@ -9,6 +10,8 @@ class Contact
     public $reagent;
     public $residueGroup;
     public $pickupDate;
+    public $description; 
+    public $imagePath;
 
     public function getId()
     {
@@ -85,6 +88,35 @@ class Contact
         $this->pickupDate = $pickupDate;
     }
 
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function getItemName()
+    {
+        return $this->itemName;
+    }
+
+    public function setItemName($itemName)
+    {
+        $this->itemName = $itemName;
+    }
+
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
+    public function setImagePath($uploadFile)
+    {
+        $this->imagePath = $uploadFile;
+    }
+
     public static function getById($conn, $id)
     {
         try {
@@ -103,6 +135,9 @@ class Contact
                 $contact->setReagent($row['reagente']);
                 $contact->setResidueGroup($row['grupo_residuo']);
                 $contact->setPickupDate($row['data_coleta']);
+                $contact->setDescription($row['descricao']);
+                $contact->setItemName($row['nome_item']);
+                $contact->setImagePath($row['caminho_imagem']);
                 // var_dump($contact);
                 return $contact;
             }
