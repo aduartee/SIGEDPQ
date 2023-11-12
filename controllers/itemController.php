@@ -12,12 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['fl
 	$laboratory =  $_POST["laboratory"];
 	$date = $_POST["data"];
 	$date_sql = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
-	$pickupDate = $_POST["pickupDate"];
-	$pickupDate_sql = date('Y-m-d', strtotime(str_replace('/', '-', $pickupDate)));
 	$quantity =  $_POST["quantity"];
 	$reagent =  $_POST["reagent"];
 	$residueGroup =  $_POST["residueGroup"];
 	$description = $_POST["description"];
+	if (empty($_POST["pickupDate"])) {
+		$pickupDate_sql = null;
+	} else {
+		$pickupDate = $_POST["pickupDate"];
+		$pickupDate_sql = date('Y-m-d', strtotime(str_replace('/', '-', $pickupDate)));
+	}
 
 	$contact = new Contact();
 
