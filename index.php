@@ -40,7 +40,10 @@ $contacts = $contactService->getAllContacts();
 		</div>
 	</div>
 
-	<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados</button>
+	<div class="action-bar">
+		<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-plus ms-2"></i></button>
+		<!-- Adicione outros botões de ação conforme necessário -->
+	</div>
 	<div class="container-table">
 		<table class="table">
 			<thead>
