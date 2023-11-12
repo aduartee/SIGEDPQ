@@ -12,19 +12,17 @@
 }
 
 h2 {
-    position: relative;
-    text-align: center;
+    margin-bottom: 20px; 
 }
 
-h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
+.line {
+    position: relative;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     width: 120px;
     height: 2px;
-    background: linear-gradient(to right, #007bff, #003874); /* Gradiente de cores */
+    background: linear-gradient(to right, #007bff, #003874);
 }
 
 .form-group{
@@ -36,10 +34,6 @@ h2::after {
     margin-right: 6%;
     margin-bottom: 30px;
 }
-/* 
-.form-control { 
-    width: 600px;
-} */
 
 .large-group{
     width: 600px;
@@ -68,22 +62,30 @@ h1 {
 }
 
 .item-image {
-    margin:100px 0 10px 20px 20px;
+    margin: 20px 0 200px 150px;
     flex: 1;
     text-align: center;
 }
 
 .item-image img{
     border-radius: 20px;
+    box-shadow: 0 8px 8px -8px #00000020;
+    width: 900px;
+    height: 500px;
 }
 
 .item-description {
     flex: 2;
-    padding: 20px;
+    padding: 10px;
     margin-left: 200px;
 }
 
 .item-description label {
     margin-bottom: 8px;
     font-weight: 600;
+}
+
+.description {
+    margin: 10px;
+    text-align: justify;
 }

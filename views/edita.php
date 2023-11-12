@@ -19,13 +19,15 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 				<h1>Editar dados</h1>
 				<div class="item-info">
 					<div class="item-image">
-						<h2 class="mb-3"><?= (!empty($item) && !empty($item->getItemName())) ? $item->getItemName() : ''; ?></h2>
-						<!-- IMAGEM QUE O USARIO MANDA -->
-						<img src="../images/itemExample.jpeg" alt="Item Image" class="img-fluid">
+						<h2><?= (!empty($item)) && !empty($item->getItemName()) ? $item->getItemName() : ''; ?></h2>
+						<div class="<?= (!empty($item)) && !empty($item->getItemName()) ? 'line' : ''; ?>"></div>
+						<img src="<?= !(empty($item)) && !(empty($item->getImagePath())) ? $item->getImagePath() : ''; ?>" alt="<?= !empty($item) && !empty($item->getItemName()) ? $item->getItemName() : '' ?>" class="img-fluid">
+						<p class="description"><?= !empty($item) && !empty($item->getDescription()) ? $item->getDescription() : '' ?></p>
 					</div>
 
 					<div class="item-description">
-					<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null && $_GET['id'] != '') ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()" enctype="multipart/form-data">							<input type="hidden" name="id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
+						<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null && $_GET['id'] != '') ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()" enctype="multipart/form-data">
+							<input type="hidden" name="id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
 							<div class="large-group">
 								<div class="form-group">
 									<label for="itemName">Nome do item:</label>

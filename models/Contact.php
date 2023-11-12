@@ -137,6 +137,7 @@ class Contact
                 $contact->setPickupDate($row['data_coleta']);
                 $contact->setDescription($row['descricao']);
                 $contact->setItemName($row['nome_item']);
+                $contact->setImagePath($row['caminho_imagem']);
                 // var_dump($contact);
                 return $contact;
             }

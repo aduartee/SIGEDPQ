@@ -16,7 +16,9 @@ class ContactService
     public function getAllContacts()
     {
         $contacts = [];
-        $query = $this->conn->query("SELECT * FROM estoque_laboratorio WHERE st = 1");
+        $query = $this->conn->query(" SELECT id, nome, laboratorio, data, quantidade, reagente, grupo_residuo, data_coleta, descricao, nome_item
+                                      FROM estoque_laboratorio 
+                                      WHERE st = 1 ");
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $contact = new Contact();
@@ -71,7 +73,7 @@ class ContactService
 
     public function updateContacts(Contact $contact)
     {
-        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName, caminho_image = :imagePath WHERE id = :id";
+        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName, caminho_imagem = :imagePath WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $contact->getId());
         $stmt->bindValue(':name', $contact->getName());

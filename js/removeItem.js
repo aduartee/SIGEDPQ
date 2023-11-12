@@ -15,7 +15,7 @@ function removeItem(id_item) {
                 type: 'POST',
                 data: {
                     id: id_item,
-                    remove: 'remove'
+                    flag: 'remove'
                 },
                 success: function (data, textStatus, xhr) {
                     if (xhr.status === 200) {

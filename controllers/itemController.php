@@ -5,7 +5,7 @@ require_once(BASE_URL . "/models/Contact.php");
 require_once(BASE_URL . "/models/ContactService.php");
 require_once(BASE_URL . "/conecta.php");
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
+if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['flag'] == 'insert') {
 	$id = $_POST["id"];
 	$name = $_POST["name"];
 	$itemName = $_POST["itemName"];
@@ -32,19 +32,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	$contact->setResidueGroup($residueGroup);
 	$contact->setDescription($description);
 
-	if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
-        $uploadDir = '../images/images/itemImage/';
-        $imagePath = $uploadDir . basename($_FILES['imagem']['name']);
-
-        if (move_uploaded_file($_FILES['imagem']['tmp_name'], $imagePath)) {
-            $contact->setImagePath($imagePath);
-   			$contactService->updateImagePath($contact->getId(), $imagePath);
-        } else {
-            echo 'Erro ao mover o arquivo.';
-        }
-    }
-
 	$contactService = new ContactService($conn);
+
+	if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+		$uploadDir = '../images/itemImage/';
+		$imagePath = $uploadDir . basename($_FILES['image']['name']);
+
+		if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
+			$contact->setImagePath($imagePath);
+			$contactService->updateImagePath($contact->getId(), $imagePath);
+		} else {
+			echo 'Erro ao mover o arquivo.';
+		}
+	} else {
+		$existingItem = $contact->getById($conn, $contact->getId());
+		if (!empty($existingItem)) {
+			$contact->setImagePath($existingItem->getImagePath());
+		}
+	}
 
 
 	$action = (isset($_GET['flag']) && $_GET['flag'] != '') ? $_GET['flag'] : '';
@@ -62,18 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['remove'] != 'remove') {
 	//TOAST
 	if ($success) {
 		$_SESSION['operation_result'] = 'insert';
+		echo "Entrou aqui";
 		header('Location:../index.php');
 	} else {
 		$_SESSION['operation_result'] = 'edit';
 		header('Location:../index.php');
 	}
 } else {
-    $contactService = new ContactService($conn);
-    $id = $_POST['id'];
-    
-    if ($contactService->removeItem($id)) {
-        http_response_code(200); 
-    } else {
-        http_response_code(500); 
-    }
+	echo "Entrou no else do error";
+	$contactService = new ContactService($conn);
+	$id = $_POST['id'];
+
+	if ($contactService->removeItem($id)) {
+		http_response_code(200);
+	} else {
+		http_response_code(500);
+	}
 }
