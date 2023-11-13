@@ -70,12 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['fl
 
 	//TOAST
 	if ($success) {
-		$_SESSION['operation_result'] = 'insert';
-		echo "Entrou aqui";
-		header('Location:../index.php');
+		header('Location:../index.php?msg=insert');
 	} else {
-		$_SESSION['operation_result'] = 'edit';
-		header('Location:../index.php');
+		header('Location:../index.php?msg=edit');
 	}
 } else {
 	echo "Entrou no else do error";

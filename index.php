@@ -22,6 +22,7 @@ $contacts = $contactService->getAllContacts();
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script src="js/removeItem.js"></script>
+	<script src="js/printTable.js"></script>
 	<!-- BOXICONS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- TOAST -->
@@ -41,11 +42,11 @@ $contacts = $contactService->getAllContacts();
 	</div>
 
 	<div class="action-bar">
-		<button class="btn btn-primary" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-plus ms-2"></i></button>
-		<!-- Adicione outros botões de ação conforme necessário -->
+		<button class="print-btn btn btn-primary me-4" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-print ms-2"></i></button>
+		<button class="print-btn btn btn-primary me-2" onclick="printTable()">Imprimir<i class="fa-solid fa-plus ms-2"></i></button>
 	</div>
-	<div class="container-table">
-		<table class="table">
+	<div class="container-table mt-5">
+		<table class="table print-table">
 			<thead>
 				<tr>
 					<th class="text-center">Numero de controle</th>
@@ -57,7 +58,7 @@ $contacts = $contactService->getAllContacts();
 					<th class="text-center">Quantidade</th>
 					<th class="text-center">Reagente</th>
 					<th class="text-center">Grupo do residuo</th>
-					<th class="text-center">Ações</th>
+					<th class="text-center actions-print">Ações</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,14 +88,13 @@ $contacts = $contactService->getAllContacts();
 <script src="js/teste.js"></script>
 <script>
 	<?php
-	if (isset($_SESSION['operation_result'])) { ?>
-		var result = "<?= $_SESSION['operation_result']; ?>";
+	if (isset($_GET['msg'])) { ?>
+		var result = "<?= $_GET['msg'] ?>";
 		if (result === 'insert') {
 			Swal.fire("Sucesso", "Inserção concluída com sucesso!", "success");
 		} else if (result === 'edit') {
 			Swal.fire("Sucesso", "Edição concluída com sucesso!", "success");
 		}
-		delete $_SESSION['operation_result'];
 	<?php } ?>
 </script>
 </body>

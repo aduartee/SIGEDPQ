@@ -90,6 +90,36 @@ tbody tr:nth-child(even) {
     background-color: #f8f9fa;
 }
 
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .print-table,
+    .print-table * {
+        visibility: visible;
+    }
+
+    .print-table {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .print-btn {
+        display: none;
+    }
+
+    .btnEdit {
+        display: none !important;
+    }
+
+    .actions-print{
+        display: none !important;
+    }
+}
+
 /* Responsividade */
 @media screen and (max-width: 800px) {
     .container {
