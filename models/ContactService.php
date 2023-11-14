@@ -119,4 +119,12 @@ class ContactService
             return "Valor inválido";
         }
     }
+
+    public function searchContacts($searchValue){
+        $query = "SELECT * FROM estoque_laboratorio WHERE nome_item LIKE :searchValue";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':searchValue', "%$searchValue%", PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }

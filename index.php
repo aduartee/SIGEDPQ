@@ -23,6 +23,7 @@ $contacts = $contactService->getAllContacts();
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script src="js/removeItem.js"></script>
 	<script src="js/printTable.js"></script>
+	<script src="js/searchItens.js"></script>
 	<!-- BOXICONS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- TOAST -->
@@ -42,8 +43,16 @@ $contacts = $contactService->getAllContacts();
 	</div>
 
 	<div class="action-bar">
-		<button class="print-btn btn btn-primary me-4" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-print ms-2"></i></button>
-		<button class="print-btn btn btn-primary me-2" onclick="printTable()">Imprimir<i class="fa-solid fa-plus ms-2"></i></button>
+		<div class="input-group">
+			<input type="text" class="form-control" id="search" placeholder="Pesquisar">
+			<div class="input-group-append">
+				<span class="input-group-text">
+					<i class="fas fa-search"></i>
+				</span>
+			</div>
+		</div>
+		<button class="print-btn btn btn-primary me-4" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-plus ms-2"></i></button>
+		<button class="print-btn btn btn-primary me-2" onclick="printTable()">Imprimir<i class="fa-solid fa-print ms-2"></i></button>
 	</div>
 	<div class="container-table mt-5">
 		<table class="table print-table">
