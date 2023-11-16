@@ -120,8 +120,40 @@ class ContactService
         }
     }
 
+    public function filterLaboratory($laboratory)
+    {
+        $mapping = [
+            'lab1' => 1,
+            'lab2' => 2,
+            'lab3' => 3,
+            'lab4' => 4,
+            'lab5' => 5,
+            'lab6' => 6,
+            'lab7' => 7,
+            'lab8' => 8,
+            'lab9' => 9,
+            'lab10' => 10,
+            'lab11' => 11,
+            'salaCoor' => 12,
+            'sala101' => 13,
+            'sala101A' => 14,
+            'sala102' => 15,
+            'sala104' => 16,
+            'sala111' => 17,
+        ];
+        
+        if (isset($mapping[$laboratory])) {
+            $position = $mapping[$laboratory];
+            $laboratorys = ['Laboratório 1', 'Laboratório 2', 'Laboratório 3', 'Laboratório 4', 'Laboratório de Espectrofotometria', 'Laboratório de Potenciometria', 'Laboratório de Cromatografia', 'Laboratório de Microbiologia', 'Laboratório de Polímeros', 'Laboratório de Pesquisa', 'Laboratório de Preparo', 'Sala de Coordenação', 'Sala de Aula – 101', 'Sala de Professores – 101A', 'Sala de Professores – 102', 'Sala de Aula – 104', 'Sala de Aula – 111'];
+            return $laboratorys[$position];
+        } else {
+            return "Valor inválido";
+        }
+
+    }
+
     public function searchContacts($searchValue){
-        $query = "SELECT * FROM estoque_laboratorio WHERE nome_item LIKE :searchValue";
+        $query = "SELECT * FROM estoque_laboratorio WHERE st = 1 AND nome_item LIKE :searchValue";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':searchValue', "%$searchValue%", PDO::PARAM_STR);
         $stmt->execute();

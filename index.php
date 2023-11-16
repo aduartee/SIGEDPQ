@@ -43,19 +43,20 @@ $contacts = $contactService->getAllContacts();
 	</div>
 
 	<div class="action-bar">
-		<div class="input-group">
-			<input type="text" class="form-control" id="search" placeholder="Pesquisar">
+		<div class="input-group ms-4">
+			<input type="text" class="search-bar form-control" id="search" placeholder="Pesquisar por nome do item">
 			<div class="input-group-append">
-				<span class="input-group-text">
-					<i class="fas fa-search"></i>
+				<span class="input-group-text bg-transparent border-0">
+					<i class="fas fa-search mt-1"></i>
 				</span>
 			</div>
 		</div>
+
 		<button class="print-btn btn btn-primary me-4" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-plus ms-2"></i></button>
 		<button class="print-btn btn btn-primary me-2" onclick="printTable()">Imprimir<i class="fa-solid fa-print ms-2"></i></button>
 	</div>
 	<div class="container-table mt-5">
-		<table class="table print-table">
+		<table class="table print-table" id="returnTable">
 			<thead>
 				<tr>
 					<th class="text-center">Numero de controle</th>
@@ -76,7 +77,7 @@ $contacts = $contactService->getAllContacts();
 						<td class="text-center"><?= $contact->getId(); ?></td>
 						<td class="text-center"><?= $contact->getItemName(); ?></td>
 						<td class="text-center"><?= $contact->getName(); ?></td>
-						<td class="text-center"><?= $contact->getLaboratory(); ?></td>
+						<td class="text-center"><?= $contactService->filterLaboratory($contact->getLaboratory()); ?></td>
 						<td class="text-center"><?= $contactService->formatData($contact->getDate()); ?></td>
 						<td class="text-center"><?= $contactService->formatData($contact->getPickupDate()); ?></td>
 						<td class="text-center"><?= $contact->getQuantity(); ?></td>

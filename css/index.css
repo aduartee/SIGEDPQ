@@ -56,9 +56,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: flex-end;
+    height: 70px;
 }
 
 .action-bar button {
+    width: 200px;
     margin-left: 10px;
 }
 
@@ -118,6 +120,12 @@ tbody tr:nth-child(even) {
     .actions-print{
         display: none !important;
     }
+}
+
+.search-bar {
+    height: 40px;
+    max-width: 400px;
+    border-radius: 20px;
 }
 
 /* Responsividade */
