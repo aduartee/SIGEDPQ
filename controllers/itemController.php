@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once("../config.php");
-require_once(BASE_URL . "/models/Contact.php");
-require_once(BASE_URL . "/models/ContactService.php");
+require_once(BASE_URL . "/models/item.php");
+require_once(BASE_URL . "/models/ItemService.php");
 require_once(BASE_URL . "/conecta.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['flag'] == 'insert') {
@@ -16,42 +16,42 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['fl
 	$reagent =  $_POST["reagent"];
 	$residueGroup =  $_POST["residueGroup"];
 	$description = $_POST["description"];
-	if (empty($_POST["pickupDate"])) {
+	if (empty($_POST["pickupDate"]) || !isset($_POST["pickupDate"])) {
 		$pickupDate_sql = null;
 	} else {
 		$pickupDate = $_POST["pickupDate"];
 		$pickupDate_sql = date('Y-m-d', strtotime(str_replace('/', '-', $pickupDate)));
 	}
 
-	$contact = new Contact();
+	$item = new StockItem();
 
-	$contact->setId($id);
-	$contact->setName($name);
-	$contact->setItemName($itemName);
-	$contact->setLaboratory($laboratory);
-	$contact->setDate($date_sql);
-	$contact->setPickupDate($pickupDate_sql);
-	$contact->setQuantity($quantity);
-	$contact->setReagent($reagent);
-	$contact->setResidueGroup($residueGroup);
-	$contact->setDescription($description);
+	$item->setId($id);
+	$item->setName($name);
+	$item->setItemName($itemName);
+	$item->setLaboratory($laboratory);
+	$item->setDate($date_sql);
+	$item->setPickupDate($pickupDate_sql);
+	$item->setQuantity($quantity);
+	$item->setReagent($reagent);
+	$item->setResidueGroup($residueGroup);
+	$item->setDescription($description);
 
-	$contactService = new ContactService($conn);
+	$itemService = new ItemService($conn);
 
 	if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
 		$uploadDir = '../images/itemImage/';
 		$imagePath = $uploadDir . basename($_FILES['image']['name']);
 
 		if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
-			$contact->setImagePath($imagePath);
-			$contactService->updateImagePath($contact->getId(), $imagePath);
+			$item->setImagePath($imagePath);
+			$itemService->updateImagePath($item->getId(), $imagePath);
 		} else {
 			echo 'Erro ao mover o arquivo.';
 		}
 	} else {
-		$existingItem = $contact->getById($conn, $contact->getId());
+		$existingItem = $item->getById($conn, $item->getId());
 		if (!empty($existingItem)) {
-			$contact->setImagePath($existingItem->getImagePath());
+			$item->setImagePath($existingItem->getImagePath());
 		}
 	}
 
@@ -61,10 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['fl
 	$success = false;
 
 	if ($action == 'insert') {
-		$contactService->insertContacts($contact);
+		$itemService->insertContacts($item);
 		$success = true;
 	} else {
-		$contactService->updateContacts($contact);
+		$itemService->updateContacts($item);
 		$success = false;
 	}
 
@@ -76,10 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $_GET['flag'] == 'edit' || $_GET['fl
 	}
 } else {
 	echo "Entrou no else do error";
-	$contactService = new ContactService($conn);
+	$itemService = new ItemService($conn);
 	$id = $_POST['id'];
 
-	if ($contactService->removeItem($id)) {
+	if ($itemService->removeItem($id)) {
 		http_response_code(200);
 	} else {
 		http_response_code(500);

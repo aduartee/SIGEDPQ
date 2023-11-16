@@ -1,5 +1,5 @@
 <?php
-class Contact
+class StockItem
 {
     public $id;
     public $itemName;
@@ -127,19 +127,19 @@ class Contact
             $row = $prepare->fetch(PDO::FETCH_ASSOC);
 
             if ($row) {
-                $contact = new Contact();
-                $contact->setName($row['nome']);
-                $contact->setLaboratory($row['laboratorio']);
-                $contact->setDate($row['data']);
-                $contact->setQuantity($row['quantidade']);
-                $contact->setReagent($row['reagente']);
-                $contact->setResidueGroup($row['grupo_residuo']);
-                $contact->setPickupDate($row['data_coleta']);
-                $contact->setDescription($row['descricao']);
-                $contact->setItemName($row['nome_item']);
-                $contact->setImagePath($row['caminho_imagem']);
-                // var_dump($contact);
-                return $contact;
+                $item = new StockItem();
+                $item->setName($row['nome']);
+                $item->setLaboratory($row['laboratorio']);
+                $item->setDate($row['data']);
+                $item->setQuantity($row['quantidade']);
+                $item->setReagent($row['reagente']);
+                $item->setResidueGroup($row['grupo_residuo']);
+                $item->setPickupDate($row['data_coleta']);
+                $item->setDescription($row['descricao']);
+                $item->setItemName($row['nome_item']);
+                $item->setImagePath($row['caminho_imagem']);
+                // var_dump($item);
+                return $item;
             }
         } catch (PDOException $e) {
             echo 'Erro na query' . $e->getMessage();

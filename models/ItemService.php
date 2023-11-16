@@ -1,5 +1,5 @@
 <?php
-class ContactService
+class ItemService
 {
     private $conn;
 
@@ -21,18 +21,18 @@ class ContactService
                                       WHERE st = 1 ");
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $contact = new Contact();
-            $contact->id = $row["id"];
-            $contact->name = $row["nome"];
-            $contact->laboratory = $row["laboratorio"];
-            $contact->date = $row["data"];
-            $contact->quantity = $row["quantidade"];
-            $contact->reagent = $row["reagente"];
-            $contact->residueGroup = $row["grupo_residuo"];
-            $contact->pickupDate = $row["data_coleta"];
-            $contact->description = $row["descricao"];
-            $contact->itemName = $row["nome_item"];
-            $contacts[] = $contact;
+            $item = new StockItem();
+            $item->id = $row["id"];
+            $item->name = $row["nome"];
+            $item->laboratory = $row["laboratorio"];
+            $item->date = $row["data"];
+            $item->quantity = $row["quantidade"];
+            $item->reagent = $row["reagente"];
+            $item->residueGroup = $row["grupo_residuo"];
+            $item->pickupDate = $row["data_coleta"];
+            $item->description = $row["descricao"];
+            $item->itemName = $row["nome_item"];
+            $contacts[] = $item;
         }
         return $contacts;
     }
@@ -50,20 +50,20 @@ class ContactService
         }
     }
 
-    public function insertContacts(Contact $contact)
+    public function insertContacts(StockItem $item)
     {
         try {
             $query = "INSERT INTO estoque_laboratorio(nome, laboratorio, quantidade, data, reagente, grupo_residuo, data_coleta, descricao, nome_item) VALUES (:name, :laboratory, :quantity, :date, :reagent, :residueGroup, :pickupDate, :description, :itemName)";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindValue(':name', $contact->getName());
-            $stmt->bindValue(':laboratory', $contact->getLaboratory());
-            $stmt->bindValue(':quantity', $contact->getQuantity());
-            $stmt->bindValue(':date', $contact->getDate());
-            $stmt->bindValue(':reagent', $contact->getReagent());
-            $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
-            $stmt->bindValue(':pickupDate', $contact->getPickupDate());
-            $stmt->bindValue(':description', $contact->getDescription());
-            $stmt->bindValue(':itemName', $contact->getItemName());
+            $stmt->bindValue(':name', $item->getName());
+            $stmt->bindValue(':laboratory', $item->getLaboratory());
+            $stmt->bindValue(':quantity', $item->getQuantity());
+            $stmt->bindValue(':date', $item->getDate());
+            $stmt->bindValue(':reagent', $item->getReagent());
+            $stmt->bindValue(':residueGroup', $item->getresidueGroup());
+            $stmt->bindValue(':pickupDate', $item->getPickupDate());
+            $stmt->bindValue(':description', $item->getDescription());
+            $stmt->bindValue(':itemName', $item->getItemName());
             $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erro ao inserir" . $e);
@@ -71,22 +71,22 @@ class ContactService
     }
 
 
-    public function updateContacts(Contact $contact)
+    public function updateContacts(StockItem $item)
     {
         $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName, caminho_imagem = :imagePath WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':id', $contact->getId());
-        $stmt->bindValue(':name', $contact->getName());
-        $stmt->bindValue(':laboratory', $contact->getLaboratory());
-        $stmt->bindValue(':quantity', $contact->getQuantity());
-        $stmt->bindValue(':date', $contact->getDate());
-        $stmt->bindValue(':reagent', $contact->getReagent());
-        $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
-        $stmt->bindValue(':residueGroup', $contact->getresidueGroup());
-        $stmt->bindValue(':pickupDate', $contact->getPickupDate());
-        $stmt->bindValue(':description', $contact->getDescription());
-        $stmt->bindValue(':itemName', $contact->getItemName());
-        $stmt->bindValue(':imagePath', $contact->getImagePath());
+        $stmt->bindValue(':id', $item->getId());
+        $stmt->bindValue(':name', $item->getName());
+        $stmt->bindValue(':laboratory', $item->getLaboratory());
+        $stmt->bindValue(':quantity', $item->getQuantity());
+        $stmt->bindValue(':date', $item->getDate());
+        $stmt->bindValue(':reagent', $item->getReagent());
+        $stmt->bindValue(':residueGroup', $item->getresidueGroup());
+        $stmt->bindValue(':residueGroup', $item->getresidueGroup());
+        $stmt->bindValue(':pickupDate', $item->getPickupDate());
+        $stmt->bindValue(':description', $item->getDescription());
+        $stmt->bindValue(':itemName', $item->getItemName());
+        $stmt->bindValue(':imagePath', $item->getImagePath());
         $stmt->execute();
     }
 
@@ -123,23 +123,23 @@ class ContactService
     public function filterLaboratory($laboratory)
     {
         $mapping = [
-            'lab1' => 1,
-            'lab2' => 2,
-            'lab3' => 3,
-            'lab4' => 4,
-            'lab5' => 5,
-            'lab6' => 6,
-            'lab7' => 7,
-            'lab8' => 8,
-            'lab9' => 9,
-            'lab10' => 10,
-            'lab11' => 11,
-            'salaCoor' => 12,
-            'sala101' => 13,
-            'sala101A' => 14,
-            'sala102' => 15,
-            'sala104' => 16,
-            'sala111' => 17,
+            'lab1' => 0,
+            'lab2' => 1,
+            'lab3' => 2,
+            'lab4' => 3,
+            'lab5' => 4,
+            'lab6' => 5,
+            'lab7' => 6,
+            'lab8' => 7,
+            'lab9' => 8,
+            'lab10' => 9,
+            'lab11' => 10,
+            'salaCoor' => 11,
+            'sala101' => 12,
+            'sala101A' => 13,
+            'sala102' => 14,
+            'sala104' => 15,
+            'sala111' => 16,
         ];
         
         if (isset($mapping[$laboratory])) {
@@ -149,7 +149,6 @@ class ContactService
         } else {
             return "Valor inválido";
         }
-
     }
 
     public function searchContacts($searchValue){

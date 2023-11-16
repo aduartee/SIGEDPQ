@@ -18,7 +18,7 @@
   <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
   <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
   <link rel="stylesheet" href="../css/edita.css">
-  <script src="../js/validaEdicao.js"></script>
+  <script src="../js/changeDescription.js"></script>
 </head>
 
 <body>

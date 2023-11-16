@@ -21,23 +21,23 @@ function formatResidues(residue) {
 
 function formatLab(lab) {
     let mapping = {
-        'lab1': 1,
-        'lab2': 2,
-        'lab3': 3,
-        'lab4': 4,
-        'lab5': 5,
-        'lab6': 6,
-        'lab7': 7,
-        'lab8': 8,
-        'lab9': 9,
-        'lab10': 10,
-        'lab11': 11,
-        'salaCoor': 12,
-        'sala101': 13,
-        'sala101A': 14,
-        'sala102': 15,
-        'sala104': 16,
-        'sala111': 17,
+        'lab1': 0,
+        'lab2': 1,
+        'lab3': 2,
+        'lab4': 3,
+        'lab5': 4,
+        'lab6': 5,
+        'lab7': 6,
+        'lab8': 7,
+        'lab9': 8,
+        'lab10': 9,
+        'lab11': 10,
+        'salaCoor': 11,
+        'sala101': 12,
+        'sala101A': 13,
+        'sala102': 14,
+        'sala104': 15,
+        'sala111': 16,
     };
 
     let position = mapping[lab];
@@ -63,22 +63,22 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function (data, textStatus, xhr) {
                 $('#returnTable tbody').empty();
 
-                data.forEach(function (contact) {
+                data.forEach(function (item) {
                     let searchRow =
                         `
-                        <tr class="color-change" data-id="${contact.id}">
-                            <td class="text-center">${contact.id}</td>
-                            <td class="text-center">${contact.nome_item}</td>
-                            <td class="text-center">${contact.nome}</td>
-                            <td class="text-center">${formatLab(contact.laboratorio)}</td>
-                            <td class="text-center">${formatDate(contact.data)}</td>
-                            <td class="text-center">${formatDate(contact.data_coleta)}</td>
-                            <td class="text-center">${contact.quantidade}</td>
-                            <td class="text-center">${contact.reagente}</td>
-                            <td class="text-center">${formatResidues(contact.grupo_residuo)}</td>
+                        <tr class="color-change" data-id="${item.id}">
+                            <td class="text-center">${item.id}</td>
+                            <td class="text-center">${item.nome_item}</td>
+                            <td class="text-center">${item.nome}</td>
+                            <td class="text-center">${formatLab(item.laboratorio)}</td>
+                            <td class="text-center">${formatDate(item.data)}</td>
+                            <td class="text-center">${formatDate(item.data_coleta)}</td>
+                            <td class="text-center">${item.quantidade}</td>
+                            <td class="text-center">${item.reagente}</td>
+                            <td class="text-center">${formatResidues(item.grupo_residuo)}</td>
                             <td>
-                                <button onclick="window.location.href='views/edita.php?id=${contact.id}'" class="btn btn-primary btnEdit">Editar<i class="fa-solid fa-pen-to-square ms-2"></i></button>
-                                <button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(${contact.id})">Remover<i class="fa-solid fa-trash-can ms-2"></i></button>
+                                <button onclick="window.location.href='views/formItem.php?id=${item.id}'" class="btn btn-primary btnEdit">Editar<i class="fa-solid fa-pen-to-square ms-2"></i></button>
+                                <button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(${item.id})">Remover<i class="fa-solid fa-trash-can ms-2"></i></button>
                             </td>
                         </tr>
                     `;

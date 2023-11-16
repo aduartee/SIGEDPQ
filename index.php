@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once "models/Contact.php";
-require_once "models/ContactService.php";
+require_once "models/Item.php";
+require_once "models/ItemService.php";
 require_once "conecta.php";
-$contactService = new ContactService($conn);
-$contacts = $contactService->getAllContacts();
+$itemService = new ItemService($conn);
+$itens = $itemService->getAllContacts();
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +52,7 @@ $contacts = $contactService->getAllContacts();
 			</div>
 		</div>
 
-		<button class="print-btn btn btn-primary me-4" onclick="window.location.href = 'views/edita.php?action=insert'">Insira os dados<i class="fa-solid fa-plus ms-2"></i></button>
+		<button class="print-btn btn btn-primary me-4" onclick="window.location.href = 'views/formItem.php?action=insert'">Insira os dados<i class="fa-solid fa-plus ms-2"></i></button>
 		<button class="print-btn btn btn-primary me-2" onclick="printTable()">Imprimir<i class="fa-solid fa-print ms-2"></i></button>
 	</div>
 	<div class="container-table mt-5">
@@ -72,20 +72,20 @@ $contacts = $contactService->getAllContacts();
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($contacts as $contact) :  ?>
-					<tr class="color-change " data-id="<?= $contact->getId(); ?>">
-						<td class="text-center"><?= $contact->getId(); ?></td>
-						<td class="text-center"><?= $contact->getItemName(); ?></td>
-						<td class="text-center"><?= $contact->getName(); ?></td>
-						<td class="text-center"><?= $contactService->filterLaboratory($contact->getLaboratory()); ?></td>
-						<td class="text-center"><?= $contactService->formatData($contact->getDate()); ?></td>
-						<td class="text-center"><?= $contactService->formatData($contact->getPickupDate()); ?></td>
-						<td class="text-center"><?= $contact->getQuantity(); ?></td>
-						<td class="text-center"><?= $contact->getReagent(); ?></td>
-						<td class="text-center"><?= $contactService->filterResidueGroup($contact->getResidueGroup()) ?></td>
+				<?php foreach ($itens as $item) :  ?>
+					<tr class="color-change " data-id="<?= $item->getId(); ?>">
+						<td class="text-center"><?= $item->getId(); ?></td>
+						<td class="text-center"><?= $item->getItemName(); ?></td>
+						<td class="text-center"><?= $item->getName(); ?></td>
+						<td class="text-center"><?= $itemService->filterLaboratory($item->getLaboratory()); ?></td>
+						<td class="text-center"><?= $itemService->formatData($item->getDate()); ?></td>
+						<td class="text-center"><?= (isset($item) && !empty($item->getPickupDate())) ? $itemService->formatData($item->getPickupDate()) : 'Não registrado'; ?></td>
+						<td class="text-center"><?= $item->getQuantity(); ?></td>
+						<td class="text-center"><?= $item->getReagent(); ?></td>
+						<td class="text-center"><?= $itemService->filterResidueGroup($item->getResidueGroup()) ?></td>
 						<td>
-							<button onclick="window.location.href='views/edita.php?id=<?= $contact->getId(); ?>'" class="btn btn-primary btnEdit">Editar<i class="fa-solid fa-pen-to-square ms-2"></i></button>
-							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $contact->getId() ?>)">Remover<i class="fa-solid fa-trash-can ms-2"></i></button>
+							<button onclick="window.location.href='views/formItem.php?id=<?= $item->getId(); ?>'" class="btn btn-primary btnEdit">Editar<i class="fa-solid fa-pen-to-square ms-2"></i></button>
+							<button class="btn btn-danger btnEdit ms-4" data-toggle="modal" onclick="removeItem(<?= $item->getId() ?>)">Remover<i class="fa-solid fa-trash-can ms-2"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>

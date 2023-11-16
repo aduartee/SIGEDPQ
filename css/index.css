@@ -17,7 +17,6 @@
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Container */
 .container {
     display: flex;
     align-items: center;
@@ -49,7 +48,6 @@
     padding: 10px;
 }
 
-/* Action Bar */
 .action-bar {
     background-color: #f8f9fa;
     padding: 10px;
@@ -64,7 +62,6 @@
     margin-left: 10px;
 }
 
-/* Tabela */
 .container-table {
     width: 95%;
     margin: 20px auto;
@@ -128,7 +125,6 @@ tbody tr:nth-child(even) {
     border-radius: 20px;
 }
 
-/* Responsividade */
 @media screen and (max-width: 800px) {
     .container {
         flex-direction: column;

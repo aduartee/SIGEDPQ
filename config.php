@@ -1,2 +1,2 @@
 <?php
-define('BASE_URL', __DIR__);
+define('BASE_URL', __DIR__); 

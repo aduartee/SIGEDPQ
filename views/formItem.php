@@ -2,12 +2,12 @@
 require_once("../config.php");
 require_once BASE_URL . "/conecta.php";
 require_once BASE_URL . "/template/base.php";
-require_once BASE_URL . "/models/Contact.php";
-require_once BASE_URL . "/models/ContactService.php";
+require_once BASE_URL . "/models/Item.php";
+require_once BASE_URL . "/models/ItemService.php";
 
-$contact = new Contact();
+$itemInstance = new StockItem();
 
-$item = (isset($_GET['id']) && $_GET['id'] != '') ? $contact->getById($conn, $_GET['id']) : '';
+$item = (isset($_GET['id']) && $_GET['id'] != '') ? $itemInstance->getById($conn, $_GET['id']) : '';
 
 if ($item == null && $_GET['action'] != "insert") : ?>
 	<h1>Registro não encontrado</h1>
@@ -26,7 +26,7 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 					</div>
 
 					<div class="item-description">
-						<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null && $_GET['id'] != '') ? '?flag=edit' : '?flag=insert'; ?>" method="POST" onsubmit="return validaEdicao()" enctype="multipart/form-data">
+						<form id="formulario" action="../controllers/itemController.php<?= (isset($_GET['id']) && $_GET['id'] != null && $_GET['id'] != '') ? '?flag=edit' : '?flag=insert'; ?>" method="POST"changeDescription.js enctype="multipart/form-data">
 							<input type="hidden" name="id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
 							<div class="large-group">
 								<div class="form-group">
@@ -91,7 +91,7 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 								</div>
 								<div class="form-group space-items tiny-group">
 									<label for="quantity">Quantidade:</label>
-									<input type="number" id="quantity" name="quantity" class="form-control" required value="<?= (!empty($item) && !empty($item->getQuantity())) ? $item->getQuantity() : ''; ?>" min="0" required>
+									<input type="number" id="quantity" name="quantity" class="form-control" required value="<?= (!empty($item) && !empty($item->getQuantity())) ? $item->getQuantity() : ''; ?>" min="1" required>
 								</div>
 								<div class="form-group space-items tiny-group">
 									<label for="reagent">Reagente:</label>
@@ -107,5 +107,5 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 		</div>
 		</form>
 	<?php endif; ?>
-	<script src="../js/validaEdicao.js"></script>
+	<script src="../js/changeDescription.js"></script>
 	<script src="../js/datepicker.js"></script>
