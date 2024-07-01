@@ -1,11 +1,13 @@
 <?php
+require_once 'SupabaseClient.php';
+
 class ItemService
 {
-    private $conn;
+    private $supabase;
 
-    public function __construct($conn)
+    public function __construct($url, $key)
     {
-        $this->conn = $conn;
+        $this->supabase = new SupabaseClient($url, $key);
     }
 
     public function formatData($data)
@@ -13,28 +15,62 @@ class ItemService
         return date('d/m/Y', strtotime($data));
     }
 
-    public function getAllContacts()
-    {
-        $contacts = [];
-        $query = $this->conn->query(" SELECT id, nome, laboratorio, data, quantidade, reagente, grupo_residuo, data_coleta, descricao, nome_item
-                                      FROM estoque_laboratorio 
-                                      WHERE st = 1 ");
+    //$requestUrl = "$url/rest/v1/estoque_laboratorio?select=id,nome_item,laboratorio,criado_em,classificacao,caminho_imagem,grupo_residuo,localizacao,descricao&st=eq.1";
 
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $item = new StockItem();
-            $item->id = $row["id"];
-            $item->name = $row["nome"];
-            $item->laboratory = $row["laboratorio"];
-            $item->date = $row["data"];
-            $item->quantity = $row["quantidade"];
-            $item->reagent = $row["reagente"];
-            $item->residueGroup = $row["grupo_residuo"];
-            $item->pickupDate = $row["data_coleta"];
-            $item->description = $row["descricao"];
-            $item->itemName = $row["nome_item"];
-            $contacts[] = $item;
+    public function getAllItems()
+    {
+        $items = [];
+        $response = $this->supabase->get("estoque_laboratorio?select=id,nome_item,laboratorio,criado_em,classificacao,caminho_imagem,grupo_residuo,localizacao,descricao&st=eq.1&order=id.desc");
+
+        if ($response) {
+            foreach ($response as $row) {
+                $item = new StockItem();
+                $item->id = $row["id"];
+                $item->itemName = $row["nome_item"];
+                $item->laboratory = $row["laboratorio"];
+                $item->date = $row["criado_em"];
+                $item->classification = $row["classificacao"];
+                $item->imagePath = $row["caminho_imagem"];
+                $item->residueGroup = $row["grupo_residuo"];
+                $item->location = $row["localizacao"];
+                $item->description = $row["descricao"];
+                $items[] = $item;
+            }
+        } else {
+            error_log("Erro ao consultar dados do Supabase.");
         }
-        return $contacts;
+
+        return $items;
+    }
+
+    public function getItemById($id)
+    {
+        try {
+            $response = $this->supabase->get("estoque_laboratorio?id=eq.$id");
+
+            if ($response) {
+                $row = $response[0];
+
+                $item = new StockItem();
+                $item->setId($row['id']);
+                $item->setItemName($row['nome_item']);
+                $item->setLaboratory($row['laboratorio']);
+                $item->setDate($row['criado_em']);
+                $item->setQuantity($row['classificacao']);
+                $item->setResidueGroup($row['grupo_residuo']);
+                $item->setDescription($row['descricao']);
+                $item->setLocation($row['localizacao']);
+                $item->setImagePath($row['caminho_imagem']);
+
+                return $item;
+            } else {
+                error_log("Item não encontrado para o ID: $id");
+                return null;
+            }
+        } catch (Exception $e) {
+            error_log('Erro ao buscar item por ID: ' . $e->getMessage());
+            return null;
+        }
     }
 
     public function updateImagePath($id, $imagePath)
@@ -71,32 +107,46 @@ class ItemService
     }
 
 
-    public function updateContacts(StockItem $item)
+    public function updateContact(StockItem $item)
     {
-        $query = "UPDATE estoque_laboratorio SET id = :id, nome = :name, laboratorio = :laboratory, quantidade = :quantity, data = :date, reagente = :reagent,  descricao = :description, grupo_residuo = :residueGroup, data_coleta = :pickupDate, nome_item = :itemName, caminho_imagem = :imagePath WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':id', $item->getId());
-        $stmt->bindValue(':name', $item->getName());
-        $stmt->bindValue(':laboratory', $item->getLaboratory());
-        $stmt->bindValue(':quantity', $item->getQuantity());
-        $stmt->bindValue(':date', $item->getDate());
-        $stmt->bindValue(':reagent', $item->getReagent());
-        $stmt->bindValue(':residueGroup', $item->getresidueGroup());
-        $stmt->bindValue(':residueGroup', $item->getresidueGroup());
-        $stmt->bindValue(':pickupDate', $item->getPickupDate());
-        $stmt->bindValue(':description', $item->getDescription());
-        $stmt->bindValue(':itemName', $item->getItemName());
-        $stmt->bindValue(':imagePath', $item->getImagePath());
-        $stmt->execute();
-    }
+        $data = [
+            'nome_item' => $item->getItemName(),
+            'laboratorio' => $item->getLaboratory(),
+            'criado_em' => $item->getDate(),
+            'grupo_residuo' => $item->getResidueGroup(),
+            'localizacao' => $item->getLocation(),
+            'descricao' => $item->getDescription(),
+            'caminho_imagem' => $item->getImagePath(),
+        ];
 
+         // Log the data being sent for update
+        error_log("Data being sent for update: " . json_encode($data));
+
+        $endpoint = "estoque_laboratorio?id=eq." . $item->getId();
+        $response = $this->supabase->put($endpoint, $data);
+
+        if (!$response) {
+            error_log("Erro ao atualizar o item no Supabase.");
+        }
+    }
     public function removeItem($id)
     {
-        $query = "UPDATE estoque_laboratorio SET st = 2 WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return true;
+        try {
+            $data = [
+                'st' => 2
+            ];
+    
+            $response = $this->supabase->put("estoque_laboratorio?id=eq.$id", $data);
+    
+            if (isset($response['code'])) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception $exception) {
+            error_log('Exception: ' . $exception->getMessage());
+            return false;
+        }
     }
 
     public function filterResidueGroup($residue)
@@ -141,21 +191,39 @@ class ItemService
             'sala104' => 15,
             'sala111' => 16,
         ];
-        
+
         if (isset($mapping[$laboratory])) {
             $position = $mapping[$laboratory];
             $laboratorys = ['Laboratório 1', 'Laboratório 2', 'Laboratório 3', 'Laboratório 4', 'Laboratório de Espectrofotometria', 'Laboratório de Potenciometria', 'Laboratório de Cromatografia', 'Laboratório de Microbiologia', 'Laboratório de Polímeros', 'Laboratório de Pesquisa', 'Laboratório de Preparo', 'Sala de Coordenação', 'Sala de Aula – 101', 'Sala de Professores – 101A', 'Sala de Professores – 102', 'Sala de Aula – 104', 'Sala de Aula – 111'];
             return $laboratorys[$position];
         } else {
-            return "Valor inválido";
+            return "Lab";
         }
     }
 
-    public function searchContacts($searchValue){
-        $query = "SELECT * FROM estoque_laboratorio WHERE st = 1 AND nome_item LIKE :searchValue";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':searchValue', "%$searchValue%", PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    public function searchContacts($searchValue)
+    {
+        try {
+            // Monta o filtro para buscar por nome_item contendo $searchValue
+            $filter = "nome_item.ilike.*$searchValue*";
+    
+            // Executa a consulta usando o SupabaseClient
+            $response = $this->supabase->get("estoque_laboratorio", [
+                'select' => '*',
+                'filter' => $filter,
+                'st' => 'eq.1'
+            ]);
+    
+            if ($response) {
+                return $response['data'];
+            } else {
+                error_log("Erro ao realizar a pesquisa no Supabase.");
+                return [];
+            }
+        } catch (Exception $e) {
+            error_log('Erro na consulta: ' . $e->getMessage());
+            return [];
+        }
     }
+
 }

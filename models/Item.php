@@ -11,6 +11,8 @@ class StockItem
     public $residueGroup;
     public $pickupDate;
     public $description; 
+    public $location; 
+    public $classification;
     public $imagePath;
 
     public function getId()
@@ -108,6 +110,25 @@ class StockItem
         $this->itemName = $itemName;
     }
 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    public function setLocation($location)
+    { 
+        $this->location = $location;
+    }
+
+    public function getClassification()
+    { 
+        return $this->classification;
+    }
+
+    public function setClassification($classification)
+    { 
+        $this->classification = $classification;
+    }
     public function getImagePath()
     {
         return $this->imagePath;
@@ -115,35 +136,5 @@ class StockItem
     public function setImagePath($uploadFile)
     {
         $this->imagePath = $uploadFile;
-    }
-
-    public static function getById($conn, $id)
-    {
-        try {
-            $query = "SELECT * FROM estoque_laboratorio WHERE id = :id";
-            $prepare = $conn->prepare($query);
-            $prepare->bindParam(':id', $id, PDO::PARAM_INT);
-            $prepare->execute();
-            $row = $prepare->fetch(PDO::FETCH_ASSOC);
-
-            if ($row) {
-                $item = new StockItem();
-                $item->setName($row['nome']);
-                $item->setLaboratory($row['laboratorio']);
-                $item->setDate($row['data']);
-                $item->setQuantity($row['quantidade']);
-                $item->setReagent($row['reagente']);
-                $item->setResidueGroup($row['grupo_residuo']);
-                $item->setPickupDate($row['data_coleta']);
-                $item->setDescription($row['descricao']);
-                $item->setItemName($row['nome_item']);
-                $item->setImagePath($row['caminho_imagem']);
-                // var_dump($item);
-                return $item;
-            }
-        } catch (PDOException $e) {
-            echo 'Erro na query' . $e->getMessage();
-            return null;
-        }
     }
 }

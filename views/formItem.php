@@ -5,9 +5,9 @@ require_once BASE_URL . "/template/base.php";
 require_once BASE_URL . "/models/Item.php";
 require_once BASE_URL . "/models/ItemService.php";
 
-$itemInstance = new StockItem();
+$itemService = new ItemService(SUPABASE_URL, SUPABASE_KEY);
 
-$item = (isset($_GET['id']) && $_GET['id'] != '') ? $itemInstance->getById($conn, $_GET['id']) : '';
+$item = (isset($_GET['id']) && $_GET['id'] != '') ? $itemService->getItemById($_GET['id']) : '';
 
 if ($item == null && $_GET['action'] != "insert") : ?>
 	<h1>Registro não encontrado</h1>
@@ -34,8 +34,8 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 									<input type="text" id="itemName" name="itemName" class="form-control" required value="<?= (!empty($item) && !empty($item->getItemName())) ? $item->getItemName() : ''; ?>">
 								</div>
 								<div class="form-group">
-									<label for="name">Nome do responsável:</label>
-									<input type="text" id="name" name="name" class="form-control" required value="<?= (!empty($item) && !empty($item->getName())) ? $item->getName() : ''; ?>">
+									<label for="name">Localização:</label>
+									<input type="text" id="name" name="name" class="form-control" required value="<?= (!empty($item) && !empty($item->getLocation())) ? $item->getLocation() : ''; ?>">
 								</div>
 								<div class="form-group">
 									<label for="description">Descrição do item:</label>
@@ -82,20 +82,8 @@ if ($item == null && $_GET['action'] != "insert") : ?>
 							</div>
 							<div class="d-flex flex-row">
 								<div class="form-group space-items small-group data1">
-									<label for="data">Data:</label>
+									<label for="data">Criado Em:</label>
 									<input type="text" id="data" name="data" class="form-control" required value="<?= !empty($item) && !empty($item->getDate()) ? date('d/m/Y', strtotime($item->getDate())) : date('d/m/Y') ?>">
-								</div>
-								<div class="form-group space-items small-group pickUpDate">
-									<label for="pickupDate">Data de coleta:</label>
-									<input type="text" id="pickupDate" name="pickupDate" class="form-control" required value="<?= !empty($item) && !empty($item->getPickupDate()) ? date('d/m/Y', strtotime($item->getPickupDate())) : '' ?>">
-								</div>
-								<div class="form-group space-items tiny-group">
-									<label for="quantity">Quantidade:</label>
-									<input type="number" id="quantity" name="quantity" class="form-control" required value="<?= (!empty($item) && !empty($item->getQuantity())) ? $item->getQuantity() : ''; ?>" min="1" required>
-								</div>
-								<div class="form-group space-items tiny-group">
-									<label for="reagent">Reagente:</label>
-									<input type="text" id="reagent" name="reagent" class="form-control" required value="<?= (!empty($item) && !empty($item->getReagent())) ? $item->getReagent() : ''; ?>">
 								</div>
 							</div>
 							<input type="submit" class="btn btn-success" value="Salvar">
